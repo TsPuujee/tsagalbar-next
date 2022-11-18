@@ -1,7 +1,9 @@
 import clsx from 'clsx';
 import { format } from 'date-fns';
+import dayjs from 'dayjs';
 import Image from 'next/image';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 import * as React from 'react';
 import DatePicker from 'react-datepicker';
 
@@ -19,18 +21,35 @@ export default function HomePage(props: any) {
   );
   const [selectedDateData, setSelectedDateData]: any =
     React.useState(todayData);
+  const router = useRouter();
   React.useEffect(() => {
-    const currentDate: number = parseInt(format(startDate, 'yyyy'), 10);
+    const currentYear: number = parseInt(format(startDate, 'yyyy'), 10);
     const currentMonth: number = parseInt(format(startDate, 'M'), 10);
     const currentDay: number = parseInt(format(startDate, 'd'), 10);
     const currentDateData: any = lunarDate(
-      currentDate,
+      currentYear,
       currentMonth,
       currentDay
     );
     setSelectedDateData(currentDateData);
   }, [startDate]);
   const [mode, setMode] = React.useState<'dark' | 'light'>('light');
+  function changeDate(date: any) {
+    setStartDate(date);
+    const currentYear: number = parseInt(format(date, 'yyyy'), 10);
+    const currentMonth: number = parseInt(format(date, 'M'), 10);
+    const currentDay: number = parseInt(format(date, 'd'), 10);
+    const todayData: any = lunarDate(currentYear, currentMonth, currentDay);
+    todayData.currentDate =
+      currentYear.toString() +
+      '-' +
+      currentMonth.toString() +
+      '-' +
+      currentDay.toString();
+    router.replace({
+      query: { ...router.query, date: todayData.currentDate },
+    });
+  }
   function toggleMode() {
     return mode === 'dark' ? setMode('light') : setMode('dark');
   }
@@ -129,7 +148,7 @@ export default function HomePage(props: any) {
               <div className='flex items-center justify-center'>
                 <DatePicker
                   selected={startDate}
-                  onChange={(date) => setStartDate(date)}
+                  onChange={(date) => changeDate(date)}
                   className={clsx(
                     mode === 'dark'
                       ? 'bg-dark text-white'
@@ -207,7 +226,6 @@ export default function HomePage(props: any) {
                         alt={selectedDateData.jil + ' жил'}
                         width={160}
                         height={160}
-                        objectPosition='center'
                       />
                       <h6 className='text-600 mt-0 mb-2 text-base font-medium leading-tight'>
                         {selectedDateData.jaran +
@@ -228,7 +246,6 @@ export default function HomePage(props: any) {
                         alt={selectedDateData.sar_jil + ' сар'}
                         width={160}
                         height={160}
-                        objectPosition='center'
                       />
                       <h6 className='text-600 mt-0 mb-2 text-base font-medium leading-tight'>
                         {selectedDateData.sar_menge +
@@ -249,7 +266,6 @@ export default function HomePage(props: any) {
                         alt={selectedDateData.odor_animal + ' өдөр'}
                         width={160}
                         height={160}
-                        objectPosition='center'
                       />
                       <h6 className='text-600 mt-0 mb-2 text-base font-medium leading-tight'>
                         {'Билгийн тооллийн ' +
@@ -269,7 +285,6 @@ export default function HomePage(props: any) {
                         alt={'Үс засуулвал: ' + selectedDateData.hairCutDay}
                         width={160}
                         height={160}
-                        objectPosition='center'
                       />
                       <h6 className='text-600 mt-0 mb-2 text-base font-medium leading-tight'>
                         {'Үс засуулвал: ' + selectedDateData.hairCutDay}
@@ -292,19 +307,43 @@ export default function HomePage(props: any) {
   );
 }
 
-export async function getServerSideProps() {
+export async function getServerSideProps(context: any) {
   try {
-    const currentDate: number = parseInt(format(new Date(), 'yyyy'), 10);
-    const currentMonth: number = parseInt(format(new Date(), 'M'), 10);
-    const currentDay: number = parseInt(format(new Date(), 'd'), 10);
-    const todayData: any = lunarDate(currentDate, currentMonth, currentDay);
-    todayData.currentDate =
-      currentDate.toString() + '-' + currentMonth.toString() + '-' + currentDay;
-    return {
-      props: {
-        todayData: todayData,
-      },
-    };
+    const { query } = context;
+    if (query?.date) {
+      const currentDateDayjs: any = dayjs(query.date);
+      const currentYear: number = parseInt(currentDateDayjs.format('YYYY'), 10);
+      const currentMonth: number = parseInt(currentDateDayjs.format('MM'), 10);
+      const currentDay: number = parseInt(currentDateDayjs.format('DD'), 10);
+      const todayData: any = lunarDate(currentYear, currentMonth, currentDay);
+      todayData.currentDate =
+        currentYear.toString() +
+        '-' +
+        currentMonth.toString() +
+        '-' +
+        currentDay;
+      return {
+        props: {
+          todayData: todayData,
+        },
+      };
+    } else {
+      const currentYear: number = parseInt(format(new Date(), 'yyyy'), 10);
+      const currentMonth: number = parseInt(format(new Date(), 'M'), 10);
+      const currentDay: number = parseInt(format(new Date(), 'd'), 10);
+      const todayData: any = lunarDate(currentYear, currentMonth, currentDay);
+      todayData.currentDate =
+        currentYear.toString() +
+        '-' +
+        currentMonth.toString() +
+        '-' +
+        currentDay;
+      return {
+        props: {
+          todayData: todayData,
+        },
+      };
+    }
   } catch (err: any) {
     return {
       props: {
