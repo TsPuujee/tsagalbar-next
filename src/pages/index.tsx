@@ -96,7 +96,7 @@ export default function HomePage(props: any) {
             >
               <div
                 className={clsx(
-                  'collapse navbar-collapse flex-grow items-center',
+                  'navbar-collapse collapse flex-grow items-center',
                   mode === 'dark'
                     ? 'bg-dark text-white'
                     : 'bg-gray-50 text-black'
@@ -213,7 +213,7 @@ export default function HomePage(props: any) {
                   )}
                 />
               </div>
-              <div className='container my-24 mx-auto px-6'>
+              <div className='container mx-auto my-24 px-6'>
                 <section className='mb-32 text-center'>
                   <div className='lg:gap-xl-12 grid gap-x-6 md:grid-cols-3 xl:grid-cols-4'>
                     <div className='mb-12'>
@@ -227,7 +227,7 @@ export default function HomePage(props: any) {
                         width={160}
                         height={160}
                       />
-                      <h6 className='text-600 mt-0 mb-2 text-base font-medium leading-tight'>
+                      <h6 className='text-600 mb-2 mt-0 text-base font-medium leading-tight'>
                         {selectedDateData.jaran +
                           '-р жаран ' +
                           selectedDateData.jil_cycle_name +
@@ -247,7 +247,7 @@ export default function HomePage(props: any) {
                         width={160}
                         height={160}
                       />
-                      <h6 className='text-600 mt-0 mb-2 text-base font-medium leading-tight'>
+                      <h6 className='text-600 mb-2 mt-0 text-base font-medium leading-tight'>
                         {selectedDateData.sar_menge +
                           ' мэнгэтэй ' +
                           selectedDateData.sar +
@@ -267,7 +267,7 @@ export default function HomePage(props: any) {
                         width={160}
                         height={160}
                       />
-                      <h6 className='text-600 mt-0 mb-2 text-base font-medium leading-tight'>
+                      <h6 className='text-600 mb-2 mt-0 text-base font-medium leading-tight'>
                         {'Билгийн тооллийн ' +
                           selectedDateData.odor_bilgiin_toolol +
                           ' ' +
@@ -282,12 +282,12 @@ export default function HomePage(props: any) {
                     <div className='mb-12'>
                       <Image
                         src='/images/hairCut.png'
-                        alt={'Үс засуулвал: ' + selectedDateData.hairCutDay}
+                        alt={'Үс засуулвал: ' + selectedDateData.us_zasuulah}
                         width={160}
                         height={160}
                       />
-                      <h6 className='text-600 mt-0 mb-2 text-base font-medium leading-tight'>
-                        {'Үс засуулвал: ' + selectedDateData.hairCutDay}
+                      <h6 className='text-600 mb-2 mt-0 text-base font-medium leading-tight'>
+                        {'Үс засуулвал: ' + selectedDateData.us_zasuulah}
                       </h6>
                     </div>
                   </div>

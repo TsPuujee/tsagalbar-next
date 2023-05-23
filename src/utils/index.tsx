@@ -168,7 +168,7 @@ const CycleName = [
 const calType = 2; // default type Mongolian
 
 // Үс засуулах өдөр
-const hairCutDay = [
+const us_zasuulah = [
   'Нас ахар болно',
   'Хэл ам хэрүүл тэмцэл ирнэ',
   'Эд мал баялаг төгөлдөр болно',
@@ -496,7 +496,7 @@ function lunarDate(Y: number, M: number, D: number) {
     odor_menge: Numbern[dayAttr.number - 1] + ' ' + dayAttr.colour9,
     odor_animal: dayAttr.elcor + ' ' + Animal[dayAttr.animal - 1],
     odor_animal_number: dayAttr.animal - 1,
-    hairCutDay: hairCutDay[lunarDayNumber - 1],
+    us_zasuulah: us_zasuulah[lunarDayNumber - 1],
     odor_full:
       'Билгийн тооллийн ' +
       lunarDayNumber +
