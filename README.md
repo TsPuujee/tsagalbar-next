@@ -2,12 +2,6 @@
 Цагаан сар тооцоологчтой
 <https://tsagalbar.vercel.app/>
 
-## Screenshots
-
-![Screenshot](https://tsagalbar.vercel.app/images/screenshot/s1.png)
-
-![Screenshot](https://tsagalbar.vercel.app/images/screenshot/s2.png)
-
 ## Api description
 
 - `GET /api?date=2023-05-23` - Get data by date and date is optional
@@ -66,3 +60,8 @@
 - `curl https://tsagalbar.vercel.app/api?date=2023-05-23`
 - `curl https://tsagalbar.vercel.app/api/lunar`
 - `curl https://tsagalbar.vercel.app/api/lunar?year=2022`
+
+## Screenshots
+
+![Screenshot](https://tsagalbar.vercel.app/images/screenshot/s2.png)
+![Screenshot](https://tsagalbar.vercel.app/images/screenshot/s1.png)
