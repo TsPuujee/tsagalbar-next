@@ -1,4 +1,3 @@
-import enablePublicAccess from 'cors';
 import dayjs from 'dayjs';
 import { NextApiRequest, NextApiResponse } from 'next';
 
@@ -7,7 +6,6 @@ import { calculateNewYear } from '@/utils/newYear';
 const allAvos = async (req: NextApiRequest, res: NextApiResponse) => {
   // Generally, you would not want this in your apps.
   // See more in 'cors.js'
-  await enablePublicAccess(req, res);
   const date: any =
     dayjs(req.query.year as string) || dayjs(req.body.year) || dayjs();
   const currentYear: number = parseInt(date.format('YYYY'), 10);
