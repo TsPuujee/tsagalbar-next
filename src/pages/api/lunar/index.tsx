@@ -20,6 +20,5 @@ const allAvos = async (req: NextApiRequest, res: NextApiResponse) => {
     error: null,
   });
 };
-// fuck you puujee
 
 export default allAvos;
