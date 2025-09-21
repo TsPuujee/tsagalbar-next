@@ -2,6 +2,7 @@
 
 import clsx from 'clsx';
 import { format } from 'date-fns';
+import Image from 'next/image';
 import { useSearchParams } from 'next/navigation';
 import * as React from 'react';
 
@@ -201,7 +202,7 @@ export default function HairCuttingCalendarPage() {
                 currentMonth,
                 'yyyy оны M сар'
               )}д үс засах сайн өдрүүд`}
-              imageSrc='/images/hairCut.png'
+              imageSrc='/images/good-haircut.png'
               imageAlt='Үс засах сайн өдөр'
               mode={mode}
               className='border-2 border-green-300 dark:border-green-600'
@@ -231,7 +232,7 @@ export default function HairCuttingCalendarPage() {
                 currentMonth,
                 'yyyy оны M сар'
               )}д үс засах муу өдрүүд`}
-              imageSrc='/images/hairCut.png'
+              imageSrc='/images/bad-haircut.png'
               imageAlt='Үс засах муу өдөр'
               mode={mode}
               className='border-2 border-red-300 dark:border-red-600'
@@ -342,6 +343,18 @@ export default function HairCuttingCalendarPage() {
                           )}
                         >
                           {day.lunarDay} өдөр
+                        </div>
+                        <div className='mb-1 flex justify-center'>
+                          <Image
+                            src={
+                              day.isGood
+                                ? '/images/good-haircut.png'
+                                : '/images/bad-haircut.png'
+                            }
+                            alt={day.isGood ? 'Сайн өдөр' : 'Муу өдөр'}
+                            width={40}
+                            height={40}
+                          />
                         </div>
                         <div
                           className={clsx(

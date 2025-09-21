@@ -100,6 +100,28 @@ export default function HomePage() {
     return <Loading />;
   }
 
+  // Determine if today's hair-cutting recommendation is good or bad
+  const goodRecommendations: string[] = [
+    'Эд мал баялаг төгөлдөр болно',
+    'Бие эрхтний хүч сайжирна',
+    'Эд мал арвидна',
+    'Өнгө зүс сайжирна',
+    'Нас уртасна',
+    'Эрч хүн ихэснэ',
+    'Эрхтэн хурц болно',
+    'Жаргал ирнэ',
+    'Эд мал арвижина',
+    'Өлзийтэй сайн',
+    'Сайн нөхөртэй нөхөрлөнө',
+    'Идээ ундаа элбэг олдоно',
+    'Эд эдлэл идээ ундаа олдоно',
+    'Жаргал үргэлжид ирнэ',
+    'Өлзийтэй сайн',
+  ];
+  const isGoodHaircutDay: boolean = goodRecommendations.includes(
+    selectedDateData.us_zasuulah
+  );
+
   return (
     <>
       <Navigation onToggleMode={toggleMode} />
@@ -193,10 +215,19 @@ export default function HomePage() {
             <LunarInfoCard
               title={`Үс засуулвал: ${selectedDateData.us_zasuulah}`}
               description='Үс засах сайн өдрийн мэдээлэл'
-              imageSrc='/images/hairCut.png'
-              imageAlt='Үс засах сайн өдөр'
+              imageSrc={
+                isGoodHaircutDay
+                  ? '/images/good-haircut.png'
+                  : '/images/bad-haircut.png'
+              }
+              imageAlt={isGoodHaircutDay ? 'Сайн өдөр' : 'Муу өдөр'}
               mode={mode}
-              className='border-2 border-mongolian-300 dark:border-mongolian-600'
+              className={clsx(
+                'border-2',
+                isGoodHaircutDay
+                  ? 'border-green-300 dark:border-green-600'
+                  : 'border-red-300 dark:border-red-600'
+              )}
             />
           </div>
         </section>
