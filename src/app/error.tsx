@@ -26,7 +26,7 @@ export default function Error({
         </p>
         <button
           onClick={() => reset()}
-          className='rounded-lg bg-mongolian-600 px-4 py-2 text-white transition-colors hover:bg-mongolian-700'
+          className='rounded-lg bg-mongolian-600 px-4 py-2 text-white'
         >
           Дахин оролдох
         </button>

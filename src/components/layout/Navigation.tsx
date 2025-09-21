@@ -2,8 +2,6 @@ import clsx from 'clsx';
 import Link from 'next/link';
 import * as React from 'react';
 
-import Button from '@/components/buttons/Button';
-
 interface NavigationProps {
   mode: 'dark' | 'light';
   onToggleMode: () => void;
@@ -25,7 +23,7 @@ export default function Navigation({ mode, onToggleMode }: NavigationProps) {
   return (
     <nav
       className={clsx(
-        'sticky top-0 z-50 w-full transition-all duration-300',
+        'sticky top-0 z-50 w-full',
         mode === 'dark'
           ? 'border-b border-gray-800 bg-gray-900/95 backdrop-blur-md'
           : 'border-b border-gray-200 bg-white/95 shadow-lg backdrop-blur-md'
@@ -36,7 +34,7 @@ export default function Navigation({ mode, onToggleMode }: NavigationProps) {
           {/* Logo */}
           <Link
             href='/'
-            className='flex items-center space-x-2 text-xl font-bold transition-colors hover:text-mongolian-600'
+            className='flex items-center space-x-2 text-xl font-bold'
           >
             <span className='text-2xl'>🐉</span>
             <span
@@ -56,9 +54,7 @@ export default function Navigation({ mode, onToggleMode }: NavigationProps) {
                 key={item.href}
                 href={item.href}
                 className={clsx(
-                  'flex items-center space-x-2 rounded-lg px-4 py-2 transition-all duration-200',
-                  'hover:bg-mongolian-100 dark:hover:bg-gray-800',
-                  'hover:text-mongolian-700 dark:hover:text-mongolian-400',
+                  'flex items-center space-x-2 rounded-lg px-4 py-2',
                   mode === 'dark' ? 'text-gray-300' : 'text-gray-700'
                 )}
               >
@@ -70,35 +66,30 @@ export default function Navigation({ mode, onToggleMode }: NavigationProps) {
 
           {/* Theme Toggle & Mobile Menu */}
           <div className='flex items-center space-x-2'>
-            <Button
+            <button
               onClick={onToggleMode}
-              variant={mode === 'dark' ? 'light' : 'dark'}
-              className='rounded-lg p-2 transition-all duration-200 hover:scale-110'
+              className={clsx(
+                'flex h-10 w-10 items-center justify-center rounded-lg border-2',
+                mode === 'dark'
+                  ? 'border-yellow-400 bg-yellow-100 text-yellow-600'
+                  : 'border-blue-400 bg-blue-100 text-blue-600'
+              )}
             >
-              <i
-                className={clsx(
-                  'text-lg transition-transform duration-300',
-                  mode === 'dark'
-                    ? 'fas fa-sun hover:rotate-180'
-                    : 'fas fa-moon hover:rotate-12'
-                )}
-              />
-            </Button>
+              <span className='text-xl'>{mode === 'dark' ? '☀️' : '🌙'}</span>
+            </button>
 
             {/* Mobile Menu Button */}
             <button
               onClick={() => setIsMenuOpen(!isMenuOpen)}
               className={clsx(
-                'rounded-lg p-2 transition-all duration-200 md:hidden',
-                mode === 'dark'
-                  ? 'text-white hover:bg-gray-800'
-                  : 'text-gray-700 hover:bg-gray-100'
+                'rounded-lg p-2 md:hidden',
+                mode === 'dark' ? 'text-white' : 'text-gray-700'
               )}
             >
               <i
                 className={clsx(
-                  'fas text-lg transition-transform duration-300',
-                  isMenuOpen ? 'fa-times rotate-180' : 'fa-bars'
+                  'fas text-lg',
+                  isMenuOpen ? 'fa-times' : 'fa-bars'
                 )}
               />
             </button>
@@ -109,7 +100,7 @@ export default function Navigation({ mode, onToggleMode }: NavigationProps) {
         {isMenuOpen && (
           <div
             className={clsx(
-              'border-t transition-all duration-300 md:hidden',
+              'border-t md:hidden',
               mode === 'dark'
                 ? 'border-gray-800 bg-gray-900'
                 : 'border-gray-200 bg-white'
@@ -122,9 +113,7 @@ export default function Navigation({ mode, onToggleMode }: NavigationProps) {
                   href={item.href}
                   onClick={() => setIsMenuOpen(false)}
                   className={clsx(
-                    'flex items-center space-x-3 rounded-lg px-4 py-3 transition-all duration-200',
-                    'hover:bg-mongolian-100 dark:hover:bg-gray-800',
-                    'hover:text-mongolian-700 dark:hover:text-mongolian-400',
+                    'flex items-center space-x-3 rounded-lg px-4 py-3',
                     mode === 'dark' ? 'text-gray-300' : 'text-gray-700'
                   )}
                 >

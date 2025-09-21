@@ -36,12 +36,7 @@ export default function ArrowLink<C extends React.ElementType>({
         width='1em'
         fill='none'
         xmlns='http://www.w3.org/2000/svg'
-        className={clsxm(
-          'relative',
-          'transition-transform duration-200',
-          direction === 'right' ? 'motion-safe:-translate-x-1' : 'rotate-180',
-          'group-hover:translate-x-0'
-        )}
+        className={clsxm('relative', direction === 'right' ? '' : 'rotate-180')}
       >
         <path
           fill='currentColor'
@@ -52,11 +47,7 @@ export default function ArrowLink<C extends React.ElementType>({
           d='M1.75 8H11'
           strokeWidth='1.5'
           strokeLinecap='round'
-          className={clsxm(
-            'origin-left transition-all duration-200',
-            'opacity-0 motion-safe:-translate-x-1',
-            'group-hover:translate-x-0 group-hover:opacity-100'
-          )}
+          className={clsxm('origin-left', 'opacity-0')}
         />
       </svg>
     </Component>

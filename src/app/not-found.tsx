@@ -13,7 +13,7 @@ export default function NotFound() {
         </p>
         <Link
           href='/'
-          className='inline-block rounded-lg bg-mongolian-600 px-6 py-3 text-white transition-colors hover:bg-mongolian-700'
+          className='inline-block rounded-lg bg-mongolian-600 px-6 py-3 text-white'
         >
           Нүүр хуудас руу буцах
         </Link>

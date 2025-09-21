@@ -41,7 +41,6 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
           'inline-flex items-center rounded px-4 py-2 font-medium',
           'focus:outline-none focus-visible:ring focus-visible:ring-primary-500',
           'shadow-sm',
-          'transition-colors duration-75',
           //#region  //*=========== Variants ===========
           [
             variant === 'primary' && [
@@ -80,7 +79,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
           //#endregion  //*======== Variants ===========
           'disabled:cursor-not-allowed',
           isLoading &&
-            'relative text-transparent transition-none hover:text-transparent disabled:cursor-wait',
+            'relative text-transparent hover:text-transparent disabled:cursor-wait',
           className
         )}
         {...rest}
@@ -88,7 +87,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
         {isLoading && (
           <div
             className={clsxm(
-              'absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2',
+              'absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2',
               {
                 'text-white': ['primary', 'dark'].includes(variant),
                 'text-black': ['light'].includes(variant),
@@ -96,7 +95,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
               }
             )}
           >
-            <ImSpinner2 className='animate-spin' />
+            <ImSpinner2 />
           </div>
         )}
         {children}

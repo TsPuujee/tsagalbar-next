@@ -27,16 +27,16 @@ export default function ModernDatePicker({
           selected={selectedDate}
           onChange={(date) => onDateChange(date as Date)}
           className={clsx(
-            'w-full rounded-xl border-2 px-4 py-3 transition-all duration-300',
+            'w-full rounded-xl border-2 px-4 py-3',
             'focus:outline-none focus:ring-4 focus:ring-mongolian-500/20',
-            'hover:border-mongolian-400 focus:border-mongolian-500',
+            'focus:border-mongolian-500',
             mode === 'dark'
               ? 'border-gray-700 bg-gray-800 text-white placeholder-gray-400'
               : 'border-gray-300 bg-white text-gray-900 placeholder-gray-500',
-            'shadow-lg hover:shadow-xl'
+            'shadow-lg'
           )}
           popperClassName={clsx(
-            'z-50 transition-all duration-300',
+            'z-50',
             mode === 'dark'
               ? 'text-white bg-gray-800 border-gray-700'
               : 'text-gray-900 bg-white border-gray-200'
@@ -74,12 +74,11 @@ export default function ModernDatePicker({
                   disabled={prevMonthButtonDisabled}
                   type='button'
                   className={clsx(
-                    'rounded-lg p-2 transition-all duration-200',
-                    'hover:scale-110 focus:outline-none focus:ring-2 focus:ring-mongolian-500',
+                    'rounded-lg p-2',
+                    'focus:outline-none focus:ring-2 focus:ring-mongolian-500',
                     prevMonthButtonDisabled
                       ? 'cursor-not-allowed opacity-50'
                       : clsx(
-                          'hover:bg-mongolian-100 dark:hover:bg-gray-700',
                           mode === 'dark' ? 'text-gray-400' : 'text-gray-600'
                         )
                   )}
@@ -92,12 +91,11 @@ export default function ModernDatePicker({
                   disabled={nextMonthButtonDisabled}
                   type='button'
                   className={clsx(
-                    'rounded-lg p-2 transition-all duration-200',
-                    'hover:scale-110 focus:outline-none focus:ring-2 focus:ring-mongolian-500',
+                    'rounded-lg p-2',
+                    'focus:outline-none focus:ring-2 focus:ring-mongolian-500',
                     nextMonthButtonDisabled
                       ? 'cursor-not-allowed opacity-50'
                       : clsx(
-                          'hover:bg-mongolian-100 dark:hover:bg-gray-700',
                           mode === 'dark' ? 'text-gray-400' : 'text-gray-600'
                         )
                   )}
@@ -110,7 +108,7 @@ export default function ModernDatePicker({
         />
 
         {/* Icon */}
-        <div className='pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 transform'>
+        <div className='pointer-events-none absolute right-3 top-1/2 -translate-y-1/2'>
           <i
             className={clsx(
               'fas fa-calendar-alt text-lg',

@@ -32,7 +32,6 @@ const ButtonLink = React.forwardRef<HTMLAnchorElement, ButtonLinkProps>(
           'inline-flex items-center rounded px-4 py-2 font-medium',
           'focus:outline-none focus-visible:ring focus-visible:ring-primary-500',
           'shadow-sm',
-          'transition-colors duration-75',
           //#region  //*=========== Variants ===========
           [
             variant === 'primary' && [

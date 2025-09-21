@@ -55,7 +55,7 @@ export default function TsagaanSarPage() {
     return (
       <div className='flex min-h-screen items-center justify-center'>
         <div className='text-center'>
-          <div className='mx-auto mb-4 h-12 w-12 animate-spin rounded-full border-b-2 border-mongolian-600'></div>
+          <div className='mx-auto mb-4 h-12 w-12 rounded-full border-b-2 border-mongolian-600'></div>
           <p className='text-gray-600 dark:text-gray-400'>Ачааллаж байна...</p>
         </div>
       </div>
@@ -68,7 +68,7 @@ export default function TsagaanSarPage() {
 
       <main
         className={clsx(
-          'min-h-screen transition-colors duration-300',
+          'min-h-screen',
           mode === 'dark'
             ? 'bg-gradient-to-br from-gray-900 to-gray-800'
             : 'bg-gradient-to-br from-gray-50 to-gray-100'
@@ -89,7 +89,7 @@ export default function TsagaanSarPage() {
             <div className='mb-12 text-center'>
               <h1
                 className={clsx(
-                  'mb-6 text-4xl font-bold transition-colors duration-300 md:text-6xl',
+                  'mb-6 text-4xl font-bold md:text-6xl',
                   'bg-gradient-to-r from-mongolian-600 to-mongolian-800 bg-clip-text text-transparent'
                 )}
               >
@@ -97,7 +97,7 @@ export default function TsagaanSarPage() {
               </h1>
               <p
                 className={clsx(
-                  'mx-auto max-w-2xl text-lg transition-colors duration-300 md:text-xl',
+                  'mx-auto max-w-2xl text-lg md:text-xl',
                   mode === 'dark' ? 'text-gray-300' : 'text-gray-600'
                 )}
               >
@@ -185,7 +185,7 @@ export default function TsagaanSarPage() {
         {/* Footer */}
         <footer
           className={clsx(
-            'border-t py-8 transition-colors duration-300',
+            'border-t py-8',
             mode === 'dark'
               ? 'border-gray-800 bg-gray-900'
               : 'border-gray-200 bg-white'
@@ -194,15 +194,11 @@ export default function TsagaanSarPage() {
           <div className='layout text-center'>
             <p
               className={clsx(
-                'transition-colors duration-300',
                 mode === 'dark' ? 'text-gray-400' : 'text-gray-600'
               )}
             >
               © {new Date().getFullYear()} By{' '}
-              <UnderlineLink
-                href='https://github.com/TsPuujee'
-                className='hover:text-mongolian-600'
-              >
+              <UnderlineLink href='https://github.com/TsPuujee'>
                 Puujee Ts
               </UnderlineLink>
             </p>
