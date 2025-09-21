@@ -8,6 +8,7 @@ import LunarInfoCard from '@/components/cards/LunarInfoCard';
 import ModernDatePicker from '@/components/date/ModernDatePicker';
 import Navigation from '@/components/layout/Navigation';
 import UnderlineLink from '@/components/links/UnderlineLink';
+import Loading from '@/components/Loading';
 
 import { getLunarNewYearDetails } from '@/utils/lunar';
 
@@ -89,14 +90,7 @@ export default function TsagaanSarPage() {
   };
 
   if (!selectedDateData) {
-    return (
-      <div className='flex min-h-screen items-center justify-center'>
-        <div className='text-center'>
-          <div className='mx-auto mb-4 h-12 w-12 rounded-full border-b-2 border-mongolian-600'></div>
-          <p className='text-gray-600 dark:text-gray-400'>Ачааллаж байна...</p>
-        </div>
-      </div>
-    );
+    return <Loading />;
   }
 
   return (

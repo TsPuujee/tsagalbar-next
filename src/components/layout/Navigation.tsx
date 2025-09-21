@@ -1,6 +1,7 @@
 import clsx from 'clsx';
 import Link from 'next/link';
 import * as React from 'react';
+import { FaBars, FaMoon, FaSun, FaTimes } from 'react-icons/fa';
 
 interface NavigationProps {
   mode: 'dark' | 'light';
@@ -67,21 +68,21 @@ export default function Navigation({
             <button
               onClick={onToggleMode}
               className={clsx(
-                'flex h-10 w-10 items-center justify-center rounded-lg border-2',
-                'border-blue-400 bg-blue-100 text-blue-600 dark:border-yellow-400 dark:bg-yellow-100 dark:text-yellow-600'
+                'flex h-10 w-10 items-center justify-center rounded-lg',
+                'bg-blue-100 text-blue-600 dark:bg-yellow-100 dark:text-yellow-600'
               )}
             >
               <span
                 className='block text-xl dark:hidden'
                 suppressHydrationWarning
               >
-                🌙
+                <FaMoon />
               </span>
               <span
                 className='hidden text-xl dark:block'
                 suppressHydrationWarning
               >
-                ☀️
+                <FaSun />
               </span>
             </button>
 
@@ -92,12 +93,11 @@ export default function Navigation({
                 'rounded-lg p-2 text-gray-700 dark:text-white md:hidden'
               )}
             >
-              <i
-                className={clsx(
-                  'fas text-lg',
-                  isMenuOpen ? 'fa-times' : 'fa-bars'
-                )}
-              />
+              {isMenuOpen ? (
+                <FaTimes className='text-lg' />
+              ) : (
+                <FaBars className='text-lg' />
+              )}
             </button>
           </div>
         </div>
