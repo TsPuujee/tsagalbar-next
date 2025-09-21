@@ -108,7 +108,7 @@
 
   /* Modern card styles */
   .card {
-    @apply overflow-hidden rounded-xl border border-gray-200 bg-white shadow-lg dark:border-gray-700 dark:bg-white;
+    @apply overflow-hidden rounded-xl border border-gray-200 bg-white shadow-lg dark:border-gray-700 dark:bg-gray-900;
   }
 
   .card-header {
@@ -120,7 +120,7 @@
   }
 
   .card-footer {
-    @apply border-t border-gray-200 bg-gray-50 p-6 dark:border-gray-700 dark:bg-gray-50;
+    @apply border-t border-gray-200 bg-gray-50 p-6 dark:border-gray-700 dark:bg-gray-900;
   }
 
   /* Gradient backgrounds */

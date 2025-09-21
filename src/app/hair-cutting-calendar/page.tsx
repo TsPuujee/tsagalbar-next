@@ -24,7 +24,20 @@ export default function HairCuttingCalendarPage() {
   const searchParams = useSearchParams();
   const [currentMonth, setCurrentMonth] = React.useState<Date>(new Date());
   const [calendarDays, setCalendarDays] = React.useState<HairCuttingDay[]>([]);
-  const [mode, setMode] = React.useState<'dark' | 'light'>('light');
+  const [mode, setMode] = React.useState<'dark' | 'light'>(() => {
+    if (typeof window === 'undefined') return 'light';
+    try {
+      const stored = localStorage.getItem('theme');
+      if (stored === 'dark' || stored === 'light') return stored;
+      if (document.documentElement.classList.contains('dark')) return 'dark';
+      const prefersDark =
+        window.matchMedia &&
+        window.matchMedia('(prefers-color-scheme: dark)').matches;
+      return prefersDark ? 'dark' : 'light';
+    } catch {
+      return 'light';
+    }
+  });
 
   // Initialize with current month or from URL params
   React.useEffect(() => {
@@ -36,6 +49,30 @@ export default function HairCuttingCalendarPage() {
   React.useEffect(() => {
     generateHairCuttingCalendar(currentMonth);
   }, [currentMonth]);
+
+  // Sync html class if needed on mount
+  React.useEffect(() => {
+    if (mode === 'dark') {
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  // Persist and apply theme on change
+  React.useEffect(() => {
+    try {
+      localStorage.setItem('theme', mode);
+      if (mode === 'dark') {
+        document.documentElement.classList.add('dark');
+      } else {
+        document.documentElement.classList.remove('dark');
+      }
+    } catch (error) {
+      // noop
+    }
+  }, [mode]);
 
   const generateHairCuttingCalendar = (month: Date) => {
     const year = month.getFullYear();
@@ -221,12 +258,12 @@ export default function HairCuttingCalendarPage() {
 
         {/* Calendar Grid */}
         <section className='layout pb-16'>
-          <div className='overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-xl dark:border-gray-700 dark:bg-white'>
+          <div className='overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-xl dark:border-gray-700 dark:bg-gray-900'>
             <div
               className={clsx(
                 'border-b p-6',
                 mode === 'dark'
-                  ? 'border-gray-700 bg-gray-50'
+                  ? 'border-gray-700 bg-gray-900'
                   : 'border-gray-200 bg-gray-50'
               )}
             >
@@ -313,7 +350,7 @@ export default function HairCuttingCalendarPage() {
 
         {/* Legend */}
         <section className='layout pb-16'>
-          <div className='rounded-xl border border-gray-200 bg-white p-6 shadow-lg dark:border-gray-700 dark:bg-white'>
+          <div className='rounded-xl border border-gray-200 bg-white p-6 shadow-lg dark:border-gray-700 dark:bg-gray-900'>
             <h3
               className={clsx(
                 'mb-4 text-xl font-bold',

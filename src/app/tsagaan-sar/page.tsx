@@ -15,7 +15,20 @@ export default function TsagaanSarPage() {
   const searchParams = useSearchParams();
   const [startDate, setStartDate] = React.useState<Date>(new Date());
   const [selectedDateData, setSelectedDateData] = React.useState<any>(null);
-  const [mode, setMode] = React.useState<'dark' | 'light'>('light');
+  const [mode, setMode] = React.useState<'dark' | 'light'>(() => {
+    if (typeof window === 'undefined') return 'light';
+    try {
+      const stored = localStorage.getItem('theme');
+      if (stored === 'dark' || stored === 'light') return stored;
+      if (document.documentElement.classList.contains('dark')) return 'dark';
+      const prefersDark =
+        window.matchMedia &&
+        window.matchMedia('(prefers-color-scheme: dark)').matches;
+      return prefersDark ? 'dark' : 'light';
+    } catch {
+      return 'light';
+    }
+  });
 
   // Initialize with current year or from URL params
   React.useEffect(() => {
@@ -37,6 +50,30 @@ export default function TsagaanSarPage() {
       setSelectedDateData(currentDateData);
     }
   }, [startDate]);
+
+  // Sync html class if needed on mount
+  React.useEffect(() => {
+    if (mode === 'dark') {
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  // Persist and apply theme on change
+  React.useEffect(() => {
+    try {
+      localStorage.setItem('theme', mode);
+      if (mode === 'dark') {
+        document.documentElement.classList.add('dark');
+      } else {
+        document.documentElement.classList.remove('dark');
+      }
+    } catch (error) {
+      // noop
+    }
+  }, [mode]);
 
   const changeDate = (date: Date) => {
     setStartDate(date);

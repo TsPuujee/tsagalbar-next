@@ -7,7 +7,10 @@ interface NavigationProps {
   onToggleMode: () => void;
 }
 
-export default function Navigation({ mode, onToggleMode }: NavigationProps) {
+export default function Navigation({
+  mode: _mode,
+  onToggleMode,
+}: NavigationProps) {
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
 
   const navItems = [
@@ -23,11 +26,10 @@ export default function Navigation({ mode, onToggleMode }: NavigationProps) {
   return (
     <nav
       className={clsx(
-        'sticky top-0 z-50 w-full',
-        mode === 'dark'
-          ? 'border-b border-gray-800 bg-gray-900/95 backdrop-blur-md'
-          : 'border-b border-gray-200 bg-white/95 shadow-lg backdrop-blur-md'
+        'sticky top-0 z-50 w-full border-b bg-white/95 shadow-lg backdrop-blur-md',
+        'border-gray-200 dark:border-gray-800 dark:bg-gray-900/95'
       )}
+      suppressHydrationWarning
     >
       <div className='layout'>
         <div className='flex items-center justify-between px-4 py-4'>
@@ -38,10 +40,7 @@ export default function Navigation({ mode, onToggleMode }: NavigationProps) {
           >
             <span className='text-2xl'>🐉</span>
             <span
-              className={clsx(
-                'hidden sm:block',
-                mode === 'dark' ? 'text-white' : 'text-gray-900'
-              )}
+              className={clsx('hidden text-gray-900 dark:text-white sm:block')}
             >
               Цагалбар
             </span>
@@ -54,8 +53,7 @@ export default function Navigation({ mode, onToggleMode }: NavigationProps) {
                 key={item.href}
                 href={item.href}
                 className={clsx(
-                  'flex items-center space-x-2 rounded-lg px-4 py-2',
-                  mode === 'dark' ? 'text-gray-300' : 'text-gray-700'
+                  'flex items-center space-x-2 rounded-lg px-4 py-2 text-gray-700 dark:text-gray-300'
                 )}
               >
                 <span>{item.icon}</span>
@@ -70,20 +68,28 @@ export default function Navigation({ mode, onToggleMode }: NavigationProps) {
               onClick={onToggleMode}
               className={clsx(
                 'flex h-10 w-10 items-center justify-center rounded-lg border-2',
-                mode === 'dark'
-                  ? 'border-yellow-400 bg-yellow-100 text-yellow-600'
-                  : 'border-blue-400 bg-blue-100 text-blue-600'
+                'border-blue-400 bg-blue-100 text-blue-600 dark:border-yellow-400 dark:bg-yellow-100 dark:text-yellow-600'
               )}
             >
-              <span className='text-xl'>{mode === 'dark' ? '☀️' : '🌙'}</span>
+              <span
+                className='block text-xl dark:hidden'
+                suppressHydrationWarning
+              >
+                🌙
+              </span>
+              <span
+                className='hidden text-xl dark:block'
+                suppressHydrationWarning
+              >
+                ☀️
+              </span>
             </button>
 
             {/* Mobile Menu Button */}
             <button
               onClick={() => setIsMenuOpen(!isMenuOpen)}
               className={clsx(
-                'rounded-lg p-2 md:hidden',
-                mode === 'dark' ? 'text-white' : 'text-gray-700'
+                'rounded-lg p-2 text-gray-700 dark:text-white md:hidden'
               )}
             >
               <i
@@ -100,10 +106,7 @@ export default function Navigation({ mode, onToggleMode }: NavigationProps) {
         {isMenuOpen && (
           <div
             className={clsx(
-              'border-t md:hidden',
-              mode === 'dark'
-                ? 'border-gray-800 bg-gray-900'
-                : 'border-gray-200 bg-white'
+              'border-t border-gray-200 bg-white dark:border-gray-800 dark:bg-gray-900 md:hidden'
             )}
           >
             <div className='space-y-1 px-4 py-2'>
@@ -113,8 +116,7 @@ export default function Navigation({ mode, onToggleMode }: NavigationProps) {
                   href={item.href}
                   onClick={() => setIsMenuOpen(false)}
                   className={clsx(
-                    'flex items-center space-x-3 rounded-lg px-4 py-3',
-                    mode === 'dark' ? 'text-gray-300' : 'text-gray-700'
+                    'flex items-center space-x-3 rounded-lg px-4 py-3 text-gray-700 dark:text-gray-300'
                   )}
                 >
                   <span className='text-lg'>{item.icon}</span>

@@ -68,8 +68,14 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang='mn' className={inter.variable}>
+    <html lang='mn' className={inter.variable} suppressHydrationWarning>
       <head>
+        <script
+          dangerouslySetInnerHTML={{
+            __html:
+              "(function(){try{var s=localStorage.getItem('theme');var m=window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches;var t=s|| (m?'dark':'light');if(t==='dark'){document.documentElement.classList.add('dark')}else{document.documentElement.classList.remove('dark')}}catch(e){}})();",
+          }}
+        />
         <link
           rel='preload'
           href='/fonts/inter-var-latin.woff2'
