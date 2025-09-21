@@ -24,6 +24,7 @@ export default function HairCuttingCalendarPage() {
   const searchParams = useSearchParams();
   const [currentMonth, setCurrentMonth] = React.useState<Date>(new Date());
   const [calendarDays, setCalendarDays] = React.useState<HairCuttingDay[]>([]);
+  const todayStr = React.useMemo(() => format(new Date(), 'yyyy-MM-dd'), []);
   const [mode, setMode] = React.useState<'dark' | 'light'>(() => {
     if (typeof window === 'undefined') return 'light';
     try {
@@ -185,7 +186,7 @@ export default function HairCuttingCalendarPage() {
                 selectedDate={currentMonth}
                 onDateChange={handleMonthChange}
                 mode={mode}
-                placeholder='Сар сонгох'
+                granularity='month'
               />
             </div>
           </div>
@@ -295,54 +296,73 @@ export default function HairCuttingCalendarPage() {
               </div>
 
               <div className='grid grid-cols-7 gap-2'>
-                {calendarDays.map((day, index) => (
-                  <div
-                    key={index}
-                    className={clsx(
-                      'relative cursor-pointer rounded-lg border-2 p-3',
-                      day.isGood
-                        ? 'border-green-200 bg-green-50 dark:border-green-800 dark:bg-green-900/20'
-                        : 'border-red-200 bg-red-50 dark:border-red-800 dark:bg-red-900/20'
-                    )}
-                  >
-                    <div className='text-center'>
-                      <div
-                        className={clsx(
-                          'mb-1 text-lg font-bold',
-                          mode === 'dark' ? 'text-white' : 'text-gray-900'
-                        )}
-                      >
-                        {format(day.date, 'd')}
-                      </div>
-                      <div
-                        className={clsx(
-                          'mb-1 text-xs font-medium',
-                          day.isGood
-                            ? 'text-green-700 dark:text-green-300'
-                            : 'text-red-700 dark:text-red-300'
-                        )}
-                      >
-                        {day.lunarDay} өдөр
-                      </div>
-                      <div
-                        className={clsx(
-                          'text-xs',
-                          mode === 'dark' ? 'text-gray-400' : 'text-gray-500'
-                        )}
-                      >
-                        {day.recommendation}
-                      </div>
-                    </div>
-
-                    {/* Status indicator */}
+                {calendarDays.map((day, index) => {
+                  const isToday = format(day.date, 'yyyy-MM-dd') === todayStr;
+                  return (
                     <div
+                      key={index}
                       className={clsx(
-                        'absolute right-1 top-1 h-3 w-3 rounded-full',
-                        day.isGood ? 'bg-green-500' : 'bg-red-500'
+                        'relative cursor-pointer rounded-lg border-2 p-3',
+                        day.isGood
+                          ? 'border-green-200 bg-green-50 dark:border-green-800 dark:bg-green-900/20'
+                          : 'border-red-200 bg-red-50 dark:border-red-800 dark:bg-red-900/20',
+                        isToday &&
+                          (mode === 'dark'
+                            ? 'ring-2 ring-mongolian-400 ring-offset-2 ring-offset-gray-900'
+                            : 'ring-2 ring-mongolian-600 ring-offset-2 ring-offset-white')
                       )}
-                    />
-                  </div>
-                ))}
+                    >
+                      {isToday && (
+                        <div
+                          className={clsx(
+                            'absolute left-1 top-1 rounded px-1.5 py-0.5 text-[10px] font-semibold',
+                            mode === 'dark'
+                              ? 'bg-mongolian-700 text-white'
+                              : 'bg-mongolian-100 text-mongolian-800'
+                          )}
+                        >
+                          Өнөөдөр
+                        </div>
+                      )}
+                      <div className='text-center'>
+                        <div
+                          className={clsx(
+                            'mb-1 text-lg font-bold',
+                            mode === 'dark' ? 'text-white' : 'text-gray-900'
+                          )}
+                        >
+                          {format(day.date, 'd')}
+                        </div>
+                        <div
+                          className={clsx(
+                            'mb-1 text-xs font-medium',
+                            day.isGood
+                              ? 'text-green-700 dark:text-green-300'
+                              : 'text-red-700 dark:text-red-300'
+                          )}
+                        >
+                          {day.lunarDay} өдөр
+                        </div>
+                        <div
+                          className={clsx(
+                            'text-xs',
+                            mode === 'dark' ? 'text-gray-400' : 'text-gray-500'
+                          )}
+                        >
+                          {day.recommendation}
+                        </div>
+                      </div>
+
+                      {/* Status indicator */}
+                      <div
+                        className={clsx(
+                          'absolute right-1 top-1 h-3 w-3 rounded-full',
+                          day.isGood ? 'bg-green-500' : 'bg-red-500'
+                        )}
+                      />
+                    </div>
+                  );
+                })}
               </div>
             </div>
           </div>
