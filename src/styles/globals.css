@@ -23,6 +23,28 @@
   --color-primary-700: rgb(var(--tw-color-primary-700)); /* #0369a1 */
   --color-primary-800: rgb(var(--tw-color-primary-800)); /* #075985 */
   --color-primary-900: rgb(var(--tw-color-primary-900)); /* #0c4a6e */
+
+  /* Mongolian theme colors */
+  --tw-color-mongolian-50: 254 252 232;
+  --tw-color-mongolian-100: 254 249 195;
+  --tw-color-mongolian-200: 254 240 138;
+  --tw-color-mongolian-300: 253 224 71;
+  --tw-color-mongolian-400: 250 204 21;
+  --tw-color-mongolian-500: 234 179 8;
+  --tw-color-mongolian-600: 202 138 4;
+  --tw-color-mongolian-700: 161 98 7;
+  --tw-color-mongolian-800: 133 77 14;
+  --tw-color-mongolian-900: 113 63 18;
+  --color-mongolian-50: rgb(var(--tw-color-mongolian-50));
+  --color-mongolian-100: rgb(var(--tw-color-mongolian-100));
+  --color-mongolian-200: rgb(var(--tw-color-mongolian-200));
+  --color-mongolian-300: rgb(var(--tw-color-mongolian-300));
+  --color-mongolian-400: rgb(var(--tw-color-mongolian-400));
+  --color-mongolian-500: rgb(var(--tw-color-mongolian-500));
+  --color-mongolian-600: rgb(var(--tw-color-mongolian-600));
+  --color-mongolian-700: rgb(var(--tw-color-mongolian-700));
+  --color-mongolian-800: rgb(var(--tw-color-mongolian-800));
+  --color-mongolian-900: rgb(var(--tw-color-mongolian-900));
 }
 
 @layer base {
@@ -83,6 +105,76 @@
   .min-h-main {
     @apply min-h-[calc(100vh-56px)];
   }
+
+  /* Modern card styles */
+  .card {
+    @apply overflow-hidden rounded-xl border border-gray-200 bg-white shadow-lg transition-all duration-300 hover:scale-105 hover:shadow-xl dark:border-gray-700 dark:bg-gray-800;
+  }
+
+  .card-header {
+    @apply border-b border-gray-200 p-6 dark:border-gray-700;
+  }
+
+  .card-body {
+    @apply p-6;
+  }
+
+  .card-footer {
+    @apply border-t border-gray-200 bg-gray-50 p-6 dark:border-gray-700 dark:bg-gray-900;
+  }
+
+  /* Gradient backgrounds */
+  .gradient-primary {
+    background: linear-gradient(
+      135deg,
+      var(--color-primary-500),
+      var(--color-primary-700)
+    );
+  }
+
+  .gradient-mongolian {
+    background: linear-gradient(
+      135deg,
+      var(--color-mongolian-500),
+      var(--color-mongolian-700)
+    );
+  }
+
+  /* Glass morphism effect */
+  .glass {
+    @apply border border-white/20 bg-white/10 backdrop-blur-md;
+  }
+
+  /* Floating animation */
+  @keyframes float {
+    0%,
+    100% {
+      transform: translateY(0px);
+    }
+    50% {
+      transform: translateY(-10px);
+    }
+  }
+
+  .float {
+    animation: float 3s ease-in-out infinite;
+  }
+
+  /* Pulse glow effect */
+  @keyframes pulse-glow {
+    0%,
+    100% {
+      box-shadow: 0 0 5px rgba(234, 179, 8, 0.5);
+    }
+    50% {
+      box-shadow: 0 0 20px rgba(234, 179, 8, 0.8),
+        0 0 30px rgba(234, 179, 8, 0.6);
+    }
+  }
+
+  .pulse-glow {
+    animation: pulse-glow 2s ease-in-out infinite;
+  }
 }
 
 @layer utilities {
@@ -123,11 +215,11 @@
 }
 
 .react-datepicker-right {
-  @apply absolute right-0 left-auto top-11 transform-none !important;
+  @apply absolute left-auto right-0 top-11 transform-none !important;
 }
 
 .react-datepicker__portal {
-  @apply absolute top-12 right-0 z-10 w-72 transform-none rounded border-2 border-gray-200 px-3 py-2 text-sm shadow;
+  @apply absolute right-0 top-12 z-10 w-72 transform-none rounded border-2 border-gray-200 px-3 py-2 text-sm shadow;
 }
 
 .react-datepicker__month-container {
