@@ -1,5 +1,5 @@
 /** @type {import('next').NextConfig} */
-module.exports = {
+const nextConfig = {
   eslint: {
     dirs: ['src'],
   },
@@ -32,3 +32,5 @@ module.exports = {
     return config;
   },
 };
+
+module.exports = nextConfig;
