@@ -7,14 +7,10 @@ import * as React from 'react';
 import { FaBars, FaMoon, FaSun, FaTimes } from 'react-icons/fa';
 
 interface NavigationProps {
-  mode: 'dark' | 'light';
   onToggleMode: () => void;
 }
 
-export default function Navigation({
-  mode: _mode,
-  onToggleMode,
-}: NavigationProps) {
+export default function Navigation({ onToggleMode }: NavigationProps) {
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
   const pathname = usePathname();
 
@@ -27,6 +23,37 @@ export default function Navigation({
       icon: '✂️',
     },
   ];
+
+  const LinkItem = ({
+    href,
+    label,
+    icon,
+    onClick,
+  }: {
+    href: string;
+    label: string;
+    icon: React.ReactNode;
+    onClick?: () => void;
+  }) => {
+    const isActive =
+      href === '/' ? pathname === '/' : pathname.startsWith(href);
+    return (
+      <Link
+        href={href}
+        aria-current={isActive ? 'page' : undefined}
+        onClick={onClick}
+        className={clsx(
+          'flex items-center space-x-2 rounded-lg px-4 py-2 transition-colors',
+          isActive
+            ? 'border border-mongolian-300 bg-mongolian-100 text-mongolian-900 shadow-sm dark:bg-gray-800 dark:text-white'
+            : 'text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-800'
+        )}
+      >
+        <span>{icon}</span>
+        <span className='font-semibold'>{label}</span>
+      </Link>
+    );
+  };
 
   return (
     <nav
@@ -53,28 +80,14 @@ export default function Navigation({
 
           {/* Desktop Navigation */}
           <div className='hidden items-center space-x-1 md:flex'>
-            {navItems.map((item) => {
-              const isActive =
-                item.href === '/'
-                  ? pathname === '/'
-                  : pathname.startsWith(item.href);
-              return (
-                <Link
-                  key={item.href}
-                  href={item.href}
-                  aria-current={isActive ? 'page' : undefined}
-                  className={clsx(
-                    'flex items-center space-x-2 rounded-lg px-4 py-2 transition-colors',
-                    isActive
-                      ? 'border border-mongolian-300 bg-mongolian-100 text-mongolian-900 shadow-sm dark:bg-gray-800 dark:text-white'
-                      : 'text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-800'
-                  )}
-                >
-                  <span>{item.icon}</span>
-                  <span className='font-semibold'>{item.label}</span>
-                </Link>
-              );
-            })}
+            {navItems.map((item) => (
+              <LinkItem
+                key={item.href}
+                href={item.href}
+                label={item.label}
+                icon={item.icon}
+              />
+            ))}
           </div>
 
           {/* Theme Toggle & Mobile Menu */}
@@ -124,29 +137,15 @@ export default function Navigation({
             )}
           >
             <div className='space-y-1 px-4 py-2'>
-              {navItems.map((item) => {
-                const isActive =
-                  item.href === '/'
-                    ? pathname === '/'
-                    : pathname.startsWith(item.href);
-                return (
-                  <Link
-                    key={item.href}
-                    href={item.href}
-                    aria-current={isActive ? 'page' : undefined}
-                    onClick={() => setIsMenuOpen(false)}
-                    className={clsx(
-                      'flex items-center space-x-3 rounded-lg px-4 py-3 transition-colors',
-                      isActive
-                        ? 'border border-mongolian-300 bg-mongolian-100 text-mongolian-900 shadow-sm dark:bg-gray-800 dark:text-white'
-                        : 'text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-800'
-                    )}
-                  >
-                    <span className='text-lg'>{item.icon}</span>
-                    <span className='font-semibold'>{item.label}</span>
-                  </Link>
-                );
-              })}
+              {navItems.map((item) => (
+                <LinkItem
+                  key={item.href}
+                  href={item.href}
+                  label={item.label}
+                  icon={item.icon}
+                  onClick={() => setIsMenuOpen(false)}
+                />
+              ))}
             </div>
           </div>
         )}

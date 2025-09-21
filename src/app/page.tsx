@@ -102,7 +102,7 @@ export default function HomePage() {
 
   return (
     <>
-      <Navigation mode={mode} onToggleMode={toggleMode} />
+      <Navigation onToggleMode={toggleMode} />
 
       <main
         className={clsx(
