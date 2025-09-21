@@ -32,7 +32,7 @@ function getPreviousLunarMonth(year: number, month: number, isLeap: number) {
 }
 
 /**
- * Өгөгдсөн лунар сарын өмнөх сарын сард дахь 30-ны өдөр (Julian Day) дээр суурилан 
+ * Өгөгдсөн лунар сарын өмнөх сарын сард дахь 30-ны өдөр (Julian Day) дээр суурилан
  * тухайн сарын эхний өдрийн Julian Day-г олдог.
  *
  * @param year - Лунар оны жил
@@ -42,7 +42,10 @@ function getPreviousLunarMonth(year: number, month: number, isLeap: number) {
  */
 export function getFirstDayJulian(year: number, month: number, isLeap: number) {
   const previousMonth = getPreviousLunarMonth(year, month, isLeap);
-  return julianDay(previousMonth.year, previousMonth.month, previousMonth.leap, 30) + 1;
+  return (
+    julianDay(previousMonth.year, previousMonth.month, previousMonth.leap, 30) +
+    1
+  );
 }
 
 /**
@@ -73,14 +76,26 @@ export function getLunarMonthForDate(year: number, month: number, day: number) {
   const MAX_ITERATIONS = 50;
 
   while (iterationCount < MAX_ITERATIONS) {
-    const monthStartJD = getFirstDayJulian(currentLunarMonth.year, currentLunarMonth.month, currentLunarMonth.leap);
-    const monthEndJD = getLastDayJulian(currentLunarMonth.year, currentLunarMonth.month, currentLunarMonth.leap);
+    const monthStartJD = getFirstDayJulian(
+      currentLunarMonth.year,
+      currentLunarMonth.month,
+      currentLunarMonth.leap
+    );
+    const monthEndJD = getLastDayJulian(
+      currentLunarMonth.year,
+      currentLunarMonth.month,
+      currentLunarMonth.leap
+    );
 
     if (monthStartJD <= jd && jd <= monthEndJD) {
       return currentLunarMonth;
     }
 
-    currentLunarMonth = getPreviousLunarMonth(currentLunarMonth.year, currentLunarMonth.month, currentLunarMonth.leap);
+    currentLunarMonth = getPreviousLunarMonth(
+      currentLunarMonth.year,
+      currentLunarMonth.month,
+      currentLunarMonth.leap
+    );
     iterationCount++;
   }
 
@@ -107,7 +122,11 @@ export function integerDivision(a: number, b: number) {
  * @param day - Gregorian өдрийн дугаар
  * @returns Julian Day Number
  */
-export function gregorianToJulianDayNumber(year: number, month: number, day: number) {
+export function gregorianToJulianDayNumber(
+  year: number,
+  month: number,
+  day: number
+) {
   const a = integerDivision(14 - month, 12);
   const y = year + 4800 - a;
   const m = month + 12 * a - 3;
@@ -162,16 +181,22 @@ export function getLunarDate(year: number, month: number, day: number) {
   const lunarMonth = getLunarMonthForDate(year, month, day);
   const yearAttributes = attribYear(lunarMonth.year);
   let lunarDayNumber = 1;
-  
+
   // Лунар сарын 1-ээс 30 хүртэлх өдөрүүдийг шалгаж, тухайн огноотой таарах өдрийг олно.
   for (let i = 1; i < 31; i++) {
-    const tempDate = julianDayToGregorian(julianDay(lunarMonth.year, lunarMonth.month, lunarMonth.leap, i));
-    if (tempDate.year === year && tempDate.month === month && tempDate.day === day) {
+    const tempDate = julianDayToGregorian(
+      julianDay(lunarMonth.year, lunarMonth.month, lunarMonth.leap, i)
+    );
+    if (
+      tempDate.year === year &&
+      tempDate.month === month &&
+      tempDate.day === day
+    ) {
       lunarDayNumber = i;
       break;
     }
   }
-  
+
   return {
     jaran: yearAttributes.cycle,
     jil: `${yearAttributes.elcor} ${yearAttributes.animalin}`,
@@ -179,18 +204,24 @@ export function getLunarDate(year: number, month: number, day: number) {
     jil_animal_number: yearAttributes.animal_number,
     jil_full: `${yearAttributes.cycle}-р жарны ${yearAttributes.cycleName} хэмээх ${yearAttributes.elcor} ${yearAttributes.animalin} жил`,
     sar: `${MMN[lunarMonth.month - 1]}${lunarMonth.leap ? ' (илүү) ' : ' '}`,
-    sar_menge: `${NUMBERN[getMonthAttributes(lunarMonth.year, lunarMonth.month).number - 1]} ${getMonthAttributes(lunarMonth.year, lunarMonth.month).colour9}`,
-    sar_animal_number: getMonthAttributes(lunarMonth.year, lunarMonth.month).animal_number,
-    sar_jil: getMonthAttributes(lunarMonth.year, lunarMonth.month).elcor +
-             ' ' +
-             getMonthAttributes(lunarMonth.year, lunarMonth.month).animal,
+    sar_menge: `${
+      NUMBERN[getMonthAttributes(lunarMonth.year, lunarMonth.month).number - 1]
+    } ${getMonthAttributes(lunarMonth.year, lunarMonth.month).colour9}`,
+    sar_animal_number: getMonthAttributes(lunarMonth.year, lunarMonth.month)
+      .animal_number,
+    sar_jil:
+      getMonthAttributes(lunarMonth.year, lunarMonth.month).elcor +
+      ' ' +
+      getMonthAttributes(lunarMonth.year, lunarMonth.month).animal,
     sar_full: `${MMN[lunarMonth.month - 1]}${
       lunarMonth.leap ? ' (илүү), ' : ', '
-    }${NUMBERN[getMonthAttributes(lunarMonth.year, lunarMonth.month).number - 1]} ${
+    }${
+      NUMBERN[getMonthAttributes(lunarMonth.year, lunarMonth.month).number - 1]
+    } ${
       getMonthAttributes(lunarMonth.year, lunarMonth.month).colour9
-    } мэнгэтэй, ${getMonthAttributes(lunarMonth.year, lunarMonth.month).elcor} ${
-      getMonthAttributes(lunarMonth.year, lunarMonth.month).animal
-    } сар`,
+    } мэнгэтэй, ${
+      getMonthAttributes(lunarMonth.year, lunarMonth.month).elcor
+    } ${getMonthAttributes(lunarMonth.year, lunarMonth.month).animal} сар`,
     odor_bilgiin_toolol: lunarDayNumber,
     odor_suudal: ELEMENT8[dayAttributes.trigram - 1],
     odor_menge: `${NUMBERN[dayAttributes.number - 1]} ${dayAttributes.colour9}`,

@@ -11,7 +11,6 @@ import Navigation from '@/components/layout/Navigation';
 import UnderlineLink from '@/components/links/UnderlineLink';
 
 import { getLunarDate } from '@/utils/calendarHelpers';
-import { GOOD_HAIR_CUTTING_DAYS } from '@/utils/constants';
 
 interface HairCuttingDay {
   date: Date;
@@ -19,7 +18,6 @@ interface HairCuttingDay {
   recommendation: string;
   isGood: boolean;
   description: string;
-  isSpecificGoodDay: boolean;
 }
 
 export default function HairCuttingCalendarPage() {
@@ -50,11 +48,27 @@ export default function HairCuttingCalendarPage() {
       const lunarData = getLunarDate(year, monthNum, day);
 
       const recommendation = lunarData.us_zasuulah;
-      const isSpecificGoodDay = GOOD_HAIR_CUTTING_DAYS.includes(recommendation);
-      const isGood =
-        isSpecificGoodDay ||
-        recommendation.includes('сайн') ||
-        recommendation.includes('зөв');
+
+      // List of positive recommendations that are considered good days for hair cutting
+      const goodRecommendations = [
+        'Эд мал баялаг төгөлдөр болно',
+        'Бие эрхтний хүч сайжирна',
+        'Эд мал арвидна',
+        'Өнгө зүс сайжирна',
+        'Нас уртасна',
+        'Эрч хүн ихэснэ',
+        'Эрхтэн хурц болно',
+        'Жаргал ирнэ',
+        'Эд мал арвижина',
+        'Өлзийтэй сайн',
+        'Сайн нөхөртэй нөхөрлөнө',
+        'Идээ ундаа элбэг олдоно',
+        'Эд эдлэл идээ ундаа олдоно',
+        'Жаргал үргэлжид ирнэ',
+        'Өлзийтэй сайн',
+      ];
+
+      const isGood = goodRecommendations.includes(recommendation);
 
       days.push({
         date: currentDate,
@@ -62,7 +76,6 @@ export default function HairCuttingCalendarPage() {
         recommendation,
         isGood,
         description: `${lunarData.odor_animal} өдөр - ${lunarData.odor_suudal} суудал`,
-        isSpecificGoodDay,
       });
     }
 
@@ -83,7 +96,6 @@ export default function HairCuttingCalendarPage() {
   };
 
   const goodDays = calendarDays.filter((day) => day.isGood);
-  const specificGoodDays = calendarDays.filter((day) => day.isSpecificGoodDay);
   const badDays = calendarDays.filter((day) => !day.isGood);
 
   return (
@@ -144,37 +156,7 @@ export default function HairCuttingCalendarPage() {
 
         {/* Summary Cards */}
         <section className='layout pb-8'>
-          <div className='mb-12 grid grid-cols-1 gap-6 md:grid-cols-3'>
-            <LunarInfoCard
-              title={`${specificGoodDays.length} онцгой сайн өдөр`}
-              description={`${format(
-                currentMonth,
-                'yyyy оны M сар'
-              )}д үс засах онцгой сайн өдрүүд`}
-              imageSrc='/images/hairCut.png'
-              imageAlt='Үс засах онцгой сайн өдөр'
-              mode={mode}
-              className='border-2 border-emerald-300 dark:border-emerald-600'
-            >
-              <div className='mt-4'>
-                <div className='flex flex-wrap gap-2'>
-                  {specificGoodDays.slice(0, 5).map((day, index) => (
-                    <span
-                      key={index}
-                      className='rounded-full bg-emerald-100 px-3 py-1 text-sm font-medium text-emerald-800 dark:bg-emerald-900 dark:text-emerald-200'
-                    >
-                      {format(day.date, 'dd')}
-                    </span>
-                  ))}
-                  {specificGoodDays.length > 5 && (
-                    <span className='rounded-full bg-gray-100 px-3 py-1 text-sm text-gray-600 dark:bg-gray-800 dark:text-gray-400'>
-                      +{specificGoodDays.length - 5} өдөр
-                    </span>
-                  )}
-                </div>
-              </div>
-            </LunarInfoCard>
-
+          <div className='mb-12 grid grid-cols-1 gap-6 md:grid-cols-2'>
             <LunarInfoCard
               title={`${goodDays.length} сайн өдөр`}
               description={`${format(
@@ -191,12 +173,7 @@ export default function HairCuttingCalendarPage() {
                   {goodDays.slice(0, 5).map((day, index) => (
                     <span
                       key={index}
-                      className={clsx(
-                        'rounded-full px-3 py-1 text-sm font-medium',
-                        day.isSpecificGoodDay
-                          ? 'bg-emerald-100 text-emerald-800 dark:bg-emerald-900 dark:text-emerald-200'
-                          : 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200'
-                      )}
+                      className='rounded-full bg-green-100 px-3 py-1 text-sm font-medium text-green-800 dark:bg-green-900 dark:text-green-200'
                     >
                       {format(day.date, 'dd')}
                     </span>
@@ -285,10 +262,8 @@ export default function HairCuttingCalendarPage() {
                   <div
                     key={index}
                     className={clsx(
-                      'relative cursor-pointer rounded-lg border-2 p-3 transition-all hover:scale-105',
-                      day.isSpecificGoodDay
-                        ? 'border-emerald-300 bg-emerald-50 shadow-md dark:border-emerald-700 dark:bg-emerald-900/30'
-                        : day.isGood
+                      'relative cursor-pointer rounded-lg border-2 p-3',
+                      day.isGood
                         ? 'border-green-200 bg-green-50 dark:border-green-800 dark:bg-green-900/20'
                         : 'border-red-200 bg-red-50 dark:border-red-800 dark:bg-red-900/20'
                     )}
@@ -305,9 +280,7 @@ export default function HairCuttingCalendarPage() {
                       <div
                         className={clsx(
                           'mb-1 text-xs font-medium',
-                          day.isSpecificGoodDay
-                            ? 'text-emerald-700 dark:text-emerald-300'
-                            : day.isGood
+                          day.isGood
                             ? 'text-green-700 dark:text-green-300'
                             : 'text-red-700 dark:text-red-300'
                         )}
@@ -316,12 +289,8 @@ export default function HairCuttingCalendarPage() {
                       </div>
                       <div
                         className={clsx(
-                          'text-xs leading-tight',
-                          day.isSpecificGoodDay
-                            ? 'text-emerald-600 dark:text-emerald-400'
-                            : mode === 'dark'
-                            ? 'text-gray-400'
-                            : 'text-gray-500'
+                          'text-xs',
+                          mode === 'dark' ? 'text-gray-400' : 'text-gray-500'
                         )}
                       >
                         {day.recommendation}
@@ -332,20 +301,9 @@ export default function HairCuttingCalendarPage() {
                     <div
                       className={clsx(
                         'absolute right-1 top-1 h-3 w-3 rounded-full',
-                        day.isSpecificGoodDay
-                          ? 'bg-emerald-500'
-                          : day.isGood
-                          ? 'bg-green-500'
-                          : 'bg-red-500'
+                        day.isGood ? 'bg-green-500' : 'bg-red-500'
                       )}
                     />
-
-                    {/* Special indicator for specific good days */}
-                    {day.isSpecificGoodDay && (
-                      <div className='absolute left-1 top-1'>
-                        <span className='text-xs'>⭐</span>
-                      </div>
-                    )}
                   </div>
                 ))}
               </div>
@@ -364,20 +322,7 @@ export default function HairCuttingCalendarPage() {
             >
               Тайлбар
             </h3>
-            <div className='grid grid-cols-1 gap-4 md:grid-cols-3'>
-              <div className='flex items-center space-x-3'>
-                <div className='relative'>
-                  <div className='h-4 w-4 rounded-full bg-emerald-500'></div>
-                  <span className='absolute -left-1 -top-1 text-xs'>⭐</span>
-                </div>
-                <span
-                  className={clsx(
-                    mode === 'dark' ? 'text-gray-300' : 'text-gray-600'
-                  )}
-                >
-                  Онцгой сайн өдөр
-                </span>
-              </div>
+            <div className='grid grid-cols-1 gap-4 md:grid-cols-2'>
               <div className='flex items-center space-x-3'>
                 <div className='h-4 w-4 rounded-full bg-green-500'></div>
                 <span

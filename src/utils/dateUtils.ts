@@ -1,4 +1,4 @@
-import { ceil,floor, mod } from 'mathjs';
+import { ceil, floor, mod } from 'mathjs';
 
 import { BETA, BETASTAR, CNST, EPOCH, IXX, MZERO } from './constants';
 
@@ -8,11 +8,14 @@ export const leapMonth = (Y: number, M: number): boolean => {
   return mod(24 * (Y - EPOCH) + 2 * M - BETA, 65) <= 1;
 };
 
-export const Mstar = (Y: number, M: number): number => 12 * (Y - EPOCH) + M - MZERO;
+export const Mstar = (Y: number, M: number): number =>
+  12 * (Y - EPOCH) + M - MZERO;
 
 export const trueMonth = (Y: number, M: number, L: number) => {
   const ix = mod(67 * Mstar(Y, M) + BETASTAR, 65);
-  return L || ix < IXX ? floor((67 * Mstar(Y, M) + BETASTAR) / 65) : ceil((67 * Mstar(Y, M) + BETASTAR) / 65);
+  return L || ix < IXX
+    ? floor((67 * Mstar(Y, M) + BETASTAR) / 65)
+    : ceil((67 * Mstar(Y, M) + BETASTAR) / 65);
 };
 
 export const trueDate = (d: number, n: number) => {
@@ -23,7 +26,7 @@ export const trueDate = (d: number, n: number) => {
   const anomalySun = meanSun - 0.25;
   const sunEqu = sunTab(12 * anomalySun);
   return meanDate + moonEqu / 60 - sunEqu / 60;
-}
+};
 
 function moonTab(i: number): number {
   i = i % 28;
@@ -55,6 +58,11 @@ function sunTab(i: number): number {
   return a === b ? s * v[a] : (s * ((b - i) * v[a] + (i - a) * v[b])) / (b - a);
 }
 
-export const julianDay = (Y: number, M: number, L: number, day: number): number => {
+export const julianDay = (
+  Y: number,
+  M: number,
+  L: number,
+  day: number
+): number => {
   return floor(trueDate(day, trueMonth(Y, M, L)));
 };
