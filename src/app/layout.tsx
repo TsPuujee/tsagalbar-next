@@ -1,7 +1,9 @@
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
+import Script from 'next/script';
 
 import '@/styles/globals.css';
+import '@/styles/colors.css';
 
 const inter = Inter({
   subsets: ['latin'],
@@ -10,6 +12,7 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL('https://tsagalbar.vercel.app'),
   title: {
     template: '%s | Цагалбар',
     default: 'Цагалбар - Монгол уламжлалт зурхай',
@@ -66,7 +69,26 @@ export default function RootLayout({
 }) {
   return (
     <html lang='mn' className={inter.variable}>
-      <body className={`${inter.className} antialiased`}>{children}</body>
+      <head>
+        <link
+          rel='preload'
+          href='/fonts/inter-var-latin.woff2'
+          as='font'
+          type='font/woff2'
+          crossOrigin='anonymous'
+        />
+        <link
+          href='https://use.fontawesome.com/releases/v5.15.3/css/all.css'
+          rel='stylesheet'
+        />
+      </head>
+      <body className={`${inter.className} antialiased`}>
+        {children}
+        <Script
+          strategy='afterInteractive'
+          src='https://unpkg.com/flowbite@1.5.3/dist/datepicker.js'
+        />
+      </body>
     </html>
   );
 }

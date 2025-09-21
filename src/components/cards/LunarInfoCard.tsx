@@ -36,6 +36,7 @@ export default function LunarInfoCard({
                 width={120}
                 height={120}
                 className='rounded-full'
+                style={{ width: 'auto', height: 'auto' }}
                 priority
               />
             </div>
