@@ -1,11 +1,19 @@
 'use client';
 
 import clsx from 'clsx';
+import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import * as React from 'react';
-import { FaBars, FaMoon, FaSun, FaTimes } from 'react-icons/fa';
-
+import {
+  FaBars,
+  FaCalendarAlt,
+  FaCut,
+  FaMoon,
+  FaSun,
+  FaTimes,
+  FaYinYang,
+} from 'react-icons/fa';
 interface NavigationProps {
   onToggleMode: () => void;
 }
@@ -15,12 +23,12 @@ export default function Navigation({ onToggleMode }: NavigationProps) {
   const pathname = usePathname();
 
   const navItems = [
-    { href: '/', label: 'Дорнын зурхай', icon: '🌙' },
-    { href: '/tsagaan-sar', label: 'Цагаан сар', icon: '🏮' },
+    { href: '/', label: 'Дорнын зурхай', icon: <FaYinYang /> },
+    { href: '/tsagaan-sar', label: 'Цагаан сар', icon: <FaCalendarAlt /> },
     {
       href: '/hair-cutting-calendar',
       label: 'Үс засуулах хуанли',
-      icon: '✂️',
+      icon: <FaCut />,
     },
   ];
 
@@ -70,7 +78,12 @@ export default function Navigation({ onToggleMode }: NavigationProps) {
             href='/'
             className='flex items-center space-x-2 text-xl font-bold'
           >
-            <span className='text-2xl'>🐉</span>
+            <Image
+              src='/favicon/favicon.svg'
+              alt='Цагалбар'
+              width={64}
+              height={64}
+            />
             <span
               className={clsx('hidden text-gray-900 dark:text-white sm:block')}
             >

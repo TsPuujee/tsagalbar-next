@@ -142,7 +142,7 @@ export default function HomePage() {
             <div className='mb-4 text-center'>
               <h1
                 className={clsx(
-                  'mb-6 text-4xl font-bold md:text-6xl',
+                  'mb-6 text-4xl font-bold md:text-5xl',
                   'bg-gradient-to-r from-mongolian-600 to-mongolian-800 bg-clip-text text-transparent'
                 )}
               >

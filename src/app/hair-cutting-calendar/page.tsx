@@ -155,7 +155,7 @@ export default function HairCuttingCalendarPage() {
             <div className='mb-12 text-center'>
               <h1
                 className={clsx(
-                  'mb-4 text-4xl font-bold md:text-6xl',
+                  'mb-6 text-4xl font-bold md:text-5xl',
                   'bg-gradient-to-r from-mongolian-600 to-mongolian-800 bg-clip-text text-transparent'
                 )}
               >
@@ -163,7 +163,7 @@ export default function HairCuttingCalendarPage() {
               </h1>
               <p
                 className={clsx(
-                  'mx-auto max-w-3xl text-lg md:text-xl',
+                  'mx-auto max-w-2xl text-lg md:text-xl',
                   mode === 'dark' ? 'text-gray-300' : 'text-gray-600'
                 )}
               >
