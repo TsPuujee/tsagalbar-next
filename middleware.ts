@@ -9,10 +9,10 @@ export default createMiddleware({
   defaultLocale: defaultLocale,
   
   // Always use locale prefix in URLs
-  localePrefix: 'as-needed'
+  localePrefix: 'always'
 });
 
 export const config = {
   // Match only internationalized pathnames
-  matcher: ['/', '/(mn|en)/:path*']
+  matcher: ['/', '/(mn|en)/:path*', '/((?!api|_next|_vercel|.*\\..*).*)']
 };
