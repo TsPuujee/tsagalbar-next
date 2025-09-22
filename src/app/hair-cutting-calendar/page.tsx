@@ -26,20 +26,6 @@ export default function HairCuttingCalendarPage() {
   const [currentMonth, setCurrentMonth] = React.useState<Date>(new Date());
   const [calendarDays, setCalendarDays] = React.useState<HairCuttingDay[]>([]);
   const todayStr = React.useMemo(() => format(new Date(), 'yyyy-MM-dd'), []);
-  const [mode, setMode] = React.useState<'dark' | 'light'>(() => {
-    if (typeof window === 'undefined') return 'light';
-    try {
-      const stored = localStorage.getItem('theme');
-      if (stored === 'dark' || stored === 'light') return stored;
-      if (document.documentElement.classList.contains('dark')) return 'dark';
-      const prefersDark =
-        window.matchMedia &&
-        window.matchMedia('(prefers-color-scheme: dark)').matches;
-      return prefersDark ? 'dark' : 'light';
-    } catch {
-      return 'light';
-    }
-  });
 
   // Initialize with current month or from URL params
   React.useEffect(() => {
@@ -52,29 +38,17 @@ export default function HairCuttingCalendarPage() {
     generateHairCuttingCalendar(currentMonth);
   }, [currentMonth]);
 
-  // Sync html class if needed on mount
-  React.useEffect(() => {
-    if (mode === 'dark') {
-      document.documentElement.classList.add('dark');
-    } else {
-      document.documentElement.classList.remove('dark');
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  // Persist and apply theme on change
-  React.useEffect(() => {
+  // Theme toggle only mutates root class and persists; rendering uses Tailwind dark: variants
+  const toggleMode = React.useCallback(() => {
+    if (typeof document === 'undefined') return;
+    const root = document.documentElement;
+    const isDark = root.classList.toggle('dark');
     try {
-      localStorage.setItem('theme', mode);
-      if (mode === 'dark') {
-        document.documentElement.classList.add('dark');
-      } else {
-        document.documentElement.classList.remove('dark');
-      }
-    } catch (error) {
-      // noop
+      localStorage.setItem('theme', isDark ? 'dark' : 'light');
+    } catch {
+      /* noop */
     }
-  }, [mode]);
+  }, []);
 
   const generateHairCuttingCalendar = (month: Date) => {
     const year = month.getFullYear();
@@ -130,10 +104,6 @@ export default function HairCuttingCalendarPage() {
     window.history.replaceState({}, '', url.toString());
   };
 
-  const toggleMode = () => {
-    setMode(mode === 'dark' ? 'light' : 'dark');
-  };
-
   const goodDays = calendarDays.filter((day) => day.isGood);
   const badDays = calendarDays.filter((day) => !day.isGood);
 
@@ -143,10 +113,7 @@ export default function HairCuttingCalendarPage() {
 
       <main
         className={clsx(
-          'min-h-screen',
-          mode === 'dark'
-            ? 'bg-gradient-to-br from-gray-900 to-gray-800'
-            : 'bg-gradient-to-br from-gray-50 to-gray-100'
+          'min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800'
         )}
       >
         {/* Hero Section */}
@@ -164,7 +131,7 @@ export default function HairCuttingCalendarPage() {
               <p
                 className={clsx(
                   'mx-auto max-w-2xl text-lg md:text-xl',
-                  mode === 'dark' ? 'text-gray-300' : 'text-gray-600'
+                  'text-gray-600 dark:text-gray-300'
                 )}
               >
                 Монгол уламжлалт зурхайн дагуу үс засах сайн муу өдрүүдийн
@@ -177,7 +144,6 @@ export default function HairCuttingCalendarPage() {
               <ModernDatePicker
                 selectedDate={currentMonth}
                 onDateChange={handleMonthChange}
-                mode={mode}
                 granularity='month'
               />
             </div>
@@ -195,7 +161,6 @@ export default function HairCuttingCalendarPage() {
               )}д үс засах сайн өдрүүд`}
               imageSrc='/images/good-haircut.png'
               imageAlt='Үс засах сайн өдөр'
-              mode={mode}
               className='border-2 border-green-300 dark:border-green-600'
             >
               <div className='mt-4'>
@@ -220,7 +185,6 @@ export default function HairCuttingCalendarPage() {
               )}д үс засах муу өдрүүд`}
               imageSrc='/images/bad-haircut.png'
               imageAlt='Үс засах муу өдөр'
-              mode={mode}
               className='border-2 border-red-300 dark:border-red-600'
             >
               <div className='mt-4'>
@@ -244,16 +208,13 @@ export default function HairCuttingCalendarPage() {
           <div className='overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-xl dark:border-gray-700 dark:bg-gray-900'>
             <div
               className={clsx(
-                'border-b p-6',
-                mode === 'dark'
-                  ? 'border-gray-700 bg-gray-900'
-                  : 'border-gray-200 bg-gray-50'
+                'border-b border-gray-200 bg-gray-50 p-6 dark:border-gray-700 dark:bg-gray-900'
               )}
             >
               <h2
                 className={clsx(
                   'text-center text-2xl font-bold',
-                  mode === 'dark' ? 'text-white' : 'text-gray-900'
+                  'text-gray-900 dark:text-white'
                 )}
               >
                 {format(currentMonth, 'yyyy оны M сар')}
@@ -268,7 +229,7 @@ export default function HairCuttingCalendarPage() {
                       key={index}
                       className={clsx(
                         'py-2 text-center font-semibold',
-                        mode === 'dark' ? 'text-gray-300' : 'text-gray-600'
+                        'text-gray-600 dark:text-gray-300'
                       )}
                     >
                       {day}
@@ -289,18 +250,14 @@ export default function HairCuttingCalendarPage() {
                           ? 'border-green-200 bg-green-50 dark:border-green-800 dark:bg-green-900/20'
                           : 'border-red-200 bg-red-50 dark:border-red-800 dark:bg-red-900/20',
                         isToday &&
-                          (mode === 'dark'
-                            ? 'ring-2 ring-mongolian-400 ring-offset-2 ring-offset-gray-900'
-                            : 'ring-2 ring-mongolian-600 ring-offset-2 ring-offset-white')
+                          'ring-2 ring-mongolian-600 ring-offset-2 ring-offset-white dark:ring-mongolian-400 dark:ring-offset-gray-900'
                       )}
                     >
                       {isToday && (
                         <div
                           className={clsx(
                             'absolute left-1 top-1 rounded px-1.5 py-0.5 text-[10px] font-semibold',
-                            mode === 'dark'
-                              ? 'bg-mongolian-700 text-white'
-                              : 'bg-mongolian-100 text-mongolian-800'
+                            'bg-mongolian-100 text-mongolian-800 dark:bg-mongolian-700 dark:text-white'
                           )}
                         >
                           Өнөөдөр
@@ -310,7 +267,7 @@ export default function HairCuttingCalendarPage() {
                         <div
                           className={clsx(
                             'mb-1 text-lg font-bold',
-                            mode === 'dark' ? 'text-white' : 'text-gray-900'
+                            'text-gray-900 dark:text-white'
                           )}
                         >
                           {format(day.date, 'd')}
@@ -340,7 +297,7 @@ export default function HairCuttingCalendarPage() {
                         <div
                           className={clsx(
                             'text-xs',
-                            mode === 'dark' ? 'text-gray-400' : 'text-gray-500'
+                            'text-gray-500 dark:text-gray-400'
                           )}
                         >
                           {day.recommendation}
@@ -368,7 +325,7 @@ export default function HairCuttingCalendarPage() {
             <h3
               className={clsx(
                 'mb-4 text-xl font-bold',
-                mode === 'dark' ? 'text-white' : 'text-gray-900'
+                'text-gray-900 dark:text-white'
               )}
             >
               Тайлбар
@@ -376,21 +333,13 @@ export default function HairCuttingCalendarPage() {
             <div className='grid grid-cols-1 gap-4 md:grid-cols-2'>
               <div className='flex items-center space-x-3'>
                 <div className='h-4 w-4 rounded-full bg-green-500'></div>
-                <span
-                  className={clsx(
-                    mode === 'dark' ? 'text-gray-300' : 'text-gray-600'
-                  )}
-                >
+                <span className={clsx('text-gray-600 dark:text-gray-300')}>
                   Сайн өдөр - Үс засуулахад тохиромжтой
                 </span>
               </div>
               <div className='flex items-center space-x-3'>
                 <div className='h-4 w-4 rounded-full bg-red-500'></div>
-                <span
-                  className={clsx(
-                    mode === 'dark' ? 'text-gray-300' : 'text-gray-600'
-                  )}
-                >
+                <span className={clsx('text-gray-600 dark:text-gray-300')}>
                   Муу өдөр - Үс засуулахад тохиромжгүй
                 </span>
               </div>
@@ -402,17 +351,11 @@ export default function HairCuttingCalendarPage() {
         <footer
           className={clsx(
             'border-t py-8',
-            mode === 'dark'
-              ? 'border-gray-800 bg-gray-900'
-              : 'border-gray-200 bg-white'
+            'border-gray-200 bg-white dark:border-gray-800 dark:bg-gray-900'
           )}
         >
           <div className='layout text-center'>
-            <p
-              className={clsx(
-                mode === 'dark' ? 'text-gray-400' : 'text-gray-600'
-              )}
-            >
+            <p className={clsx('text-gray-600 dark:text-gray-400')}>
               © {new Date().getFullYear()} By{' '}
               <UnderlineLink href='https://github.com/TsPuujee'>
                 Puujee Ts

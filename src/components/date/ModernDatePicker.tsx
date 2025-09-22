@@ -4,7 +4,6 @@ import * as React from 'react';
 interface ModernDatePickerProps {
   selectedDate: Date;
   onDateChange: (date: Date) => void;
-  mode: 'dark' | 'light';
   className?: string;
   showYearPicker?: boolean;
   granularity?: 'day' | 'month' | 'year';
@@ -14,7 +13,6 @@ interface ModernDatePickerProps {
 export default function ModernDatePicker({
   selectedDate,
   onDateChange,
-  mode,
   className,
   showYearPicker = false,
   granularity = 'day',
@@ -27,9 +25,8 @@ export default function ModernDatePicker({
     'w-full rounded-xl border-2 px-4 py-3',
     'focus:outline-none focus:ring-4 focus:ring-mongolian-500/20',
     'focus:border-mongolian-500',
-    mode === 'dark'
-      ? 'border-gray-700 bg-gray-800 text-white placeholder-gray-400'
-      : 'border-gray-300 bg-white text-gray-900 placeholder-gray-500',
+    'border-gray-300 bg-white text-gray-900 placeholder-gray-500',
+    'dark:border-gray-700 dark:bg-gray-800 dark:text-white dark:placeholder-gray-400',
     'shadow-lg'
   );
 
@@ -165,7 +162,7 @@ export default function ModernDatePicker({
             <i
               className={clsx(
                 'fas fa-calendar-alt text-lg',
-                mode === 'dark' ? 'text-gray-400' : 'text-gray-500'
+                'text-gray-500 dark:text-gray-400'
               )}
             />
           </div>

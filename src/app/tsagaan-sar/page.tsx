@@ -16,20 +16,6 @@ export default function TsagaanSarPage() {
   const searchParams = useSearchParams();
   const [startDate, setStartDate] = React.useState<Date>(new Date());
   const [selectedDateData, setSelectedDateData] = React.useState<any>(null);
-  const [mode, setMode] = React.useState<'dark' | 'light'>(() => {
-    if (typeof window === 'undefined') return 'light';
-    try {
-      const stored = localStorage.getItem('theme');
-      if (stored === 'dark' || stored === 'light') return stored;
-      if (document.documentElement.classList.contains('dark')) return 'dark';
-      const prefersDark =
-        window.matchMedia &&
-        window.matchMedia('(prefers-color-scheme: dark)').matches;
-      return prefersDark ? 'dark' : 'light';
-    } catch {
-      return 'light';
-    }
-  });
 
   // Initialize with current year or from URL params
   React.useEffect(() => {
@@ -52,29 +38,17 @@ export default function TsagaanSarPage() {
     }
   }, [startDate]);
 
-  // Sync html class if needed on mount
-  React.useEffect(() => {
-    if (mode === 'dark') {
-      document.documentElement.classList.add('dark');
-    } else {
-      document.documentElement.classList.remove('dark');
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  // Persist and apply theme on change
-  React.useEffect(() => {
+  // Theme toggle only mutates root class and persists; rendering uses Tailwind dark: variants
+  const toggleMode = React.useCallback(() => {
+    if (typeof document === 'undefined') return;
+    const root = document.documentElement;
+    const isDark = root.classList.toggle('dark');
     try {
-      localStorage.setItem('theme', mode);
-      if (mode === 'dark') {
-        document.documentElement.classList.add('dark');
-      } else {
-        document.documentElement.classList.remove('dark');
-      }
-    } catch (error) {
-      // noop
+      localStorage.setItem('theme', isDark ? 'dark' : 'light');
+    } catch {
+      /* noop */
     }
-  }, [mode]);
+  }, []);
 
   const changeDate = (date: Date) => {
     setStartDate(date);
@@ -83,10 +57,6 @@ export default function TsagaanSarPage() {
     const url = new URL(window.location.href);
     url.searchParams.set('year', year.toString());
     window.history.replaceState({}, '', url.toString());
-  };
-
-  const toggleMode = () => {
-    setMode(mode === 'dark' ? 'light' : 'dark');
   };
 
   if (!selectedDateData) {
@@ -99,10 +69,7 @@ export default function TsagaanSarPage() {
 
       <main
         className={clsx(
-          'min-h-screen',
-          mode === 'dark'
-            ? 'bg-gradient-to-br from-gray-900 to-gray-800'
-            : 'bg-gradient-to-br from-gray-50 to-gray-100'
+          'min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800'
         )}
       >
         {/* Hero Section */}
@@ -120,7 +87,7 @@ export default function TsagaanSarPage() {
               <p
                 className={clsx(
                   'mx-auto max-w-2xl text-lg md:text-xl',
-                  mode === 'dark' ? 'text-gray-300' : 'text-gray-600'
+                  'text-gray-600 dark:text-gray-300'
                 )}
               >
                 Монгол зурхайн аргаар бодсон дорнын зурхай
@@ -132,7 +99,6 @@ export default function TsagaanSarPage() {
               <ModernDatePicker
                 selectedDate={startDate}
                 onDateChange={changeDate}
-                mode={mode}
                 placeholder='Жил сонгох'
                 showYearPicker={true}
               />
@@ -148,14 +114,13 @@ export default function TsagaanSarPage() {
               description='Жилийн зурхайн мэдээлэл'
               imageSrc={selectedDateData.image}
               imageAlt={`${selectedDateData.year} жил`}
-              mode={mode}
               className='mb-8'
             >
               <div className='mt-6 space-y-4'>
                 <div
                   className={clsx(
                     'grid grid-cols-1 gap-4 md:grid-cols-2',
-                    mode === 'dark' ? 'text-gray-300' : 'text-gray-700'
+                    'text-gray-700 dark:text-gray-300'
                   )}
                 >
                   <div className='space-y-3'>
@@ -191,9 +156,7 @@ export default function TsagaanSarPage() {
                 <div
                   className={clsx(
                     'mt-6 rounded-lg border p-4',
-                    mode === 'dark'
-                      ? 'border-gray-700 bg-gray-800 text-gray-300'
-                      : 'border-gray-200 bg-gray-50 text-gray-700'
+                    'border-gray-200 bg-gray-50 text-gray-700 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-300'
                   )}
                 >
                   <span className='font-semibold'>Битүүний сар: </span>
@@ -208,17 +171,11 @@ export default function TsagaanSarPage() {
         <footer
           className={clsx(
             'border-t py-8',
-            mode === 'dark'
-              ? 'border-gray-800 bg-gray-900'
-              : 'border-gray-200 bg-white'
+            'border-gray-200 bg-white dark:border-gray-800 dark:bg-gray-900'
           )}
         >
           <div className='layout text-center'>
-            <p
-              className={clsx(
-                mode === 'dark' ? 'text-gray-400' : 'text-gray-600'
-              )}
-            >
+            <p className={clsx('text-gray-600 dark:text-gray-400')}>
               © {new Date().getFullYear()} By{' '}
               <UnderlineLink href='https://github.com/TsPuujee'>
                 Puujee Ts

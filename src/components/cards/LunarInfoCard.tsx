@@ -7,7 +7,6 @@ interface LunarInfoCardProps {
   description: string;
   imageSrc: string;
   imageAlt: string;
-  mode: 'dark' | 'light';
   className?: string;
   children?: React.ReactNode;
 }
@@ -17,7 +16,6 @@ export default function LunarInfoCard({
   description,
   imageSrc,
   imageAlt,
-  mode,
   className,
   children,
 }: LunarInfoCardProps) {
@@ -46,7 +44,7 @@ export default function LunarInfoCard({
           <h3
             className={clsx(
               'text-lg font-bold',
-              mode === 'dark' ? 'text-white' : 'text-gray-900'
+              'text-gray-900 dark:text-white'
             )}
           >
             {title}
@@ -56,7 +54,7 @@ export default function LunarInfoCard({
           <p
             className={clsx(
               'text-sm leading-relaxed',
-              mode === 'dark' ? 'text-gray-300' : 'text-gray-600'
+              'text-gray-600 dark:text-gray-300'
             )}
           >
             {description}

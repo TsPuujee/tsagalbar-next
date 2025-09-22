@@ -17,20 +17,6 @@ export default function HomePage() {
   const searchParams = useSearchParams();
   const [startDate, setStartDate] = React.useState<Date>(new Date());
   const [selectedDateData, setSelectedDateData] = React.useState<any>(null);
-  const [mode, setMode] = React.useState<'dark' | 'light'>(() => {
-    if (typeof window === 'undefined') return 'light';
-    try {
-      const stored = localStorage.getItem('theme');
-      if (stored === 'dark' || stored === 'light') return stored;
-      if (document.documentElement.classList.contains('dark')) return 'dark';
-      const prefersDark =
-        window.matchMedia &&
-        window.matchMedia('(prefers-color-scheme: dark)').matches;
-      return prefersDark ? 'dark' : 'light';
-    } catch {
-      return 'light';
-    }
-  });
 
   // Initialize with today's data or from URL params
   React.useEffect(() => {
@@ -59,29 +45,17 @@ export default function HomePage() {
     }
   }, [startDate]);
 
-  // Sync html class if needed on mount (avoid flicker on client nav)
-  React.useEffect(() => {
-    if (mode === 'dark') {
-      document.documentElement.classList.add('dark');
-    } else {
-      document.documentElement.classList.remove('dark');
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  // Persist and apply theme on change
-  React.useEffect(() => {
+  // Theme toggle only mutates root class and persists; rendering uses Tailwind dark: variants
+  const toggleMode = React.useCallback(() => {
+    if (typeof document === 'undefined') return;
+    const root = document.documentElement;
+    const isDark = root.classList.toggle('dark');
     try {
-      localStorage.setItem('theme', mode);
-      if (mode === 'dark') {
-        document.documentElement.classList.add('dark');
-      } else {
-        document.documentElement.classList.remove('dark');
-      }
-    } catch (error) {
-      // noop
+      localStorage.setItem('theme', isDark ? 'dark' : 'light');
+    } catch {
+      /* noop */
     }
-  }, [mode]);
+  }, []);
 
   const changeDate = (date: Date) => {
     setStartDate(date);
@@ -90,10 +64,6 @@ export default function HomePage() {
     const url = new URL(window.location.href);
     url.searchParams.set('date', dateString);
     window.history.replaceState({}, '', url.toString());
-  };
-
-  const toggleMode = () => {
-    setMode(mode === 'dark' ? 'light' : 'dark');
   };
 
   if (!selectedDateData) {
@@ -128,10 +98,7 @@ export default function HomePage() {
 
       <main
         className={clsx(
-          'min-h-screen',
-          mode === 'dark'
-            ? 'bg-gradient-to-br from-gray-900 to-gray-800'
-            : 'bg-gradient-to-br from-gray-50 to-gray-100'
+          'min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800'
         )}
       >
         {/* Hero Section */}
@@ -151,7 +118,7 @@ export default function HomePage() {
               <p
                 className={clsx(
                   'mx-auto max-w-2xl text-lg md:text-xl',
-                  mode === 'dark' ? 'text-gray-300' : 'text-gray-600'
+                  'text-gray-600 dark:text-gray-300'
                 )}
               >
                 Монгол зурхайн аргаар бодсон дорнын зурхай
@@ -163,7 +130,6 @@ export default function HomePage() {
               <ModernDatePicker
                 selectedDate={startDate}
                 onDateChange={changeDate}
-                mode={mode}
                 placeholder='Өдөр сонгох'
               />
             </div>
@@ -179,7 +145,6 @@ export default function HomePage() {
               description='Жилийн зурхайн мэдээлэл'
               imageSrc={`/images/${selectedDateData.jil_animal_number + 1}.png`}
               imageAlt={`${selectedDateData.jil} жил`}
-              mode={mode}
             />
 
             {/* Month Card */}
@@ -188,7 +153,6 @@ export default function HomePage() {
               description='Сарын зурхайн мэдээлэл'
               imageSrc={`/images/${selectedDateData.sar_animal_number + 1}.png`}
               imageAlt={`${selectedDateData.sar_jil} сар`}
-              mode={mode}
             />
 
             {/* Day Card */}
@@ -199,7 +163,6 @@ export default function HomePage() {
                 selectedDateData.odor_animal_number + 1
               }.png`}
               imageAlt={`${selectedDateData.odor_animal} өдөр`}
-              mode={mode}
             />
 
             {/* Hair Cutting Card */}
@@ -212,7 +175,6 @@ export default function HomePage() {
                   : '/images/bad-haircut.png'
               }
               imageAlt={isGoodHaircutDay ? 'Сайн өдөр' : 'Муу өдөр'}
-              mode={mode}
               className={clsx(
                 'border-2',
                 isGoodHaircutDay
@@ -227,17 +189,11 @@ export default function HomePage() {
         <footer
           className={clsx(
             'border-t py-8',
-            mode === 'dark'
-              ? 'border-gray-800 bg-gray-900'
-              : 'border-gray-200 bg-white'
+            'border-gray-200 bg-white dark:border-gray-800 dark:bg-gray-900'
           )}
         >
           <div className='layout text-center'>
-            <p
-              className={clsx(
-                mode === 'dark' ? 'text-gray-400' : 'text-gray-600'
-              )}
-            >
+            <p className={clsx('text-gray-600 dark:text-gray-400')}>
               © {new Date().getFullYear()} By{' '}
               <UnderlineLink href='https://github.com/TsPuujee'>
                 Puujee Ts
