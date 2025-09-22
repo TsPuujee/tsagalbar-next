@@ -3,6 +3,7 @@
 import clsx from 'clsx';
 import { useSearchParams } from 'next/navigation';
 import * as React from 'react';
+import { useTranslations } from 'next-intl';
 
 import useThemeToggle from '@/hooks/useThemeToggle';
 
@@ -17,6 +18,7 @@ import Loading from '@/components/Loading';
 import { getLunarNewYearDetails } from '@/utils/lunar';
 
 export default function TsagaanSarPage() {
+  const t = useTranslations();
   const searchParams = useSearchParams();
   const [startDate, setStartDate] = React.useState<Date>(new Date());
   const [selectedDateData, setSelectedDateData] = React.useState<any>(null);
@@ -63,15 +65,15 @@ export default function TsagaanSarPage() {
 
       <PageMain>
         <PageHero
-          title='Цагаан сар'
-          subtitle='Монгол зурхайн аргаар бодсон дорнын зурхай'
+          title={t('tsagaanSar.title')}
+          subtitle={t('tsagaanSar.subtitle')}
           containerClassName='z-10'
         >
           <div className='mx-auto mb-4 max-w-md'>
             <ModernDatePicker
               selectedDate={startDate}
               onDateChange={changeDate}
-              placeholder='Жил сонгох'
+              placeholder={t('tsagaanSar.selectYear')}
               showYearPicker={true}
             />
           </div>
@@ -81,8 +83,8 @@ export default function TsagaanSarPage() {
         <section className='layout py-4'>
           <div className='mx-auto max-w-4xl'>
             <LunarInfoCard
-              title={`${selectedDateData.year} жил`}
-              description='Жилийн зурхайн мэдээлэл'
+              title={`${selectedDateData.year} ${t('tsagaanSar.year')}`}
+              description={t('home.yearInfo')}
               imageSrc={selectedDateData.image}
               imageAlt={`${selectedDateData.year} жил`}
               className='mb-8'

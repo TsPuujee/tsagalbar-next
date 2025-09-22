@@ -5,6 +5,7 @@ import { format } from 'date-fns';
 import Image from 'next/image';
 import { useSearchParams } from 'next/navigation';
 import * as React from 'react';
+import { useTranslations } from 'next-intl';
 
 import useThemeToggle from '@/hooks/useThemeToggle';
 
@@ -27,6 +28,7 @@ interface HairCuttingDay {
 }
 
 export default function HairCuttingCalendarPage() {
+  const t = useTranslations();
   const searchParams = useSearchParams();
   const [currentMonth, setCurrentMonth] = React.useState<Date>(new Date());
   const [calendarDays, setCalendarDays] = React.useState<HairCuttingDay[]>([]);
@@ -57,24 +59,8 @@ export default function HairCuttingCalendarPage() {
 
       const recommendation = lunarData.us_zasuulah;
 
-      // List of positive recommendations that are considered good days for hair cutting
-      const goodRecommendations = [
-        'Эд мал баялаг төгөлдөр болно',
-        'Бие эрхтний хүч сайжирна',
-        'Эд мал арвидна',
-        'Өнгө зүс сайжирна',
-        'Нас уртасна',
-        'Эрч хүн ихэснэ',
-        'Эрхтэн хурц болно',
-        'Жаргал ирнэ',
-        'Эд мал арвижина',
-        'Өлзийтэй сайн',
-        'Сайн нөхөртэй нөхөрлөнө',
-        'Идээ ундаа элбэг олдоно',
-        'Эд эдлэл идээ ундаа олдоно',
-        'Жаргал үргэлжид ирнэ',
-        'Өлзийтэй сайн',
-      ];
+      // Get good recommendations from translations
+      const goodRecommendations = t.raw('goodRecommendations') as string[];
 
       const isGood = goodRecommendations.includes(recommendation);
 
@@ -108,10 +94,8 @@ export default function HairCuttingCalendarPage() {
 
       <PageMain>
         <PageHero
-          title='Үс засуулах хуанли'
-          subtitle={
-            'Монгол уламжлалт зурхайн дагуу үс засах сайн муу өдрүүдийн\n                хуанли'
-          }
+          title={t('hairCutting.title')}
+          subtitle={t('hairCutting.subtitle')}
         >
           <div className='mx-auto mb-4 max-w-md'>
             <ModernDatePicker
@@ -126,7 +110,7 @@ export default function HairCuttingCalendarPage() {
         <section className='layout pb-4'>
           <div className='mb-12 grid grid-cols-1 gap-6 md:grid-cols-2'>
             <LunarInfoCard
-              title={`${goodDays.length} сайн өдөр`}
+              title={`${goodDays.length} ${t('home.goodDay')}`}
               description={`${format(
                 currentMonth,
                 'yyyy оны M сар'
@@ -141,7 +125,7 @@ export default function HairCuttingCalendarPage() {
             </LunarInfoCard>
 
             <LunarInfoCard
-              title={`${badDays.length} муу өдөр`}
+              title={`${badDays.length} ${t('home.badDay')}`}
               description={`${format(
                 currentMonth,
                 'yyyy оны M сар'
@@ -288,13 +272,13 @@ export default function HairCuttingCalendarPage() {
               <div className='flex items-center space-x-3'>
                 <div className='h-4 w-4 rounded-full bg-green-500'></div>
                 <span className={clsx('text-gray-600 dark:text-gray-300')}>
-                  Сайн өдөр - Үс засуулахад тохиромжтой
+                  {t('hairCutting.legend.good')}
                 </span>
               </div>
               <div className='flex items-center space-x-3'>
                 <div className='h-4 w-4 rounded-full bg-red-500'></div>
                 <span className={clsx('text-gray-600 dark:text-gray-300')}>
-                  Муу өдөр - Үс засуулахад тохиромжгүй
+                  {t('hairCutting.legend.bad')}
                 </span>
               </div>
             </div>
