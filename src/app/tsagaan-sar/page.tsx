@@ -4,10 +4,14 @@ import clsx from 'clsx';
 import { useSearchParams } from 'next/navigation';
 import * as React from 'react';
 
+import useThemeToggle from '@/hooks/useThemeToggle';
+
 import LunarInfoCard from '@/components/cards/LunarInfoCard';
 import ModernDatePicker from '@/components/date/ModernDatePicker';
 import Navigation from '@/components/layout/Navigation';
-import UnderlineLink from '@/components/links/UnderlineLink';
+import PageHero from '@/components/layout/PageHero';
+import PageMain from '@/components/layout/PageMain';
+import SiteFooter from '@/components/layout/SiteFooter';
 import Loading from '@/components/Loading';
 
 import { getLunarNewYearDetails } from '@/utils/lunar';
@@ -38,17 +42,7 @@ export default function TsagaanSarPage() {
     }
   }, [startDate]);
 
-  // Theme toggle only mutates root class and persists; rendering uses Tailwind dark: variants
-  const toggleMode = React.useCallback(() => {
-    if (typeof document === 'undefined') return;
-    const root = document.documentElement;
-    const isDark = root.classList.toggle('dark');
-    try {
-      localStorage.setItem('theme', isDark ? 'dark' : 'light');
-    } catch {
-      /* noop */
-    }
-  }, []);
+  const toggleMode = useThemeToggle();
 
   const changeDate = (date: Date) => {
     setStartDate(date);
@@ -67,44 +61,21 @@ export default function TsagaanSarPage() {
     <>
       <Navigation onToggleMode={toggleMode} />
 
-      <main
-        className={clsx(
-          'min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800'
-        )}
-      >
-        {/* Hero Section */}
-        <section className='relative overflow-hidden'>
-          <div className='layout relative z-10 pt-12'>
-            <div className='mb-12 text-center'>
-              <h1
-                className={clsx(
-                  'mb-6 text-4xl font-bold md:text-5xl',
-                  'bg-gradient-to-r from-mongolian-600 to-mongolian-800 bg-clip-text text-transparent'
-                )}
-              >
-                Цагаан сар
-              </h1>
-              <p
-                className={clsx(
-                  'mx-auto max-w-2xl text-lg md:text-xl',
-                  'text-gray-600 dark:text-gray-300'
-                )}
-              >
-                Монгол зурхайн аргаар бодсон дорнын зурхай
-              </p>
-            </div>
-
-            {/* Year Picker */}
-            <div className='mx-auto mb-4 max-w-md'>
-              <ModernDatePicker
-                selectedDate={startDate}
-                onDateChange={changeDate}
-                placeholder='Жил сонгох'
-                showYearPicker={true}
-              />
-            </div>
+      <PageMain>
+        <PageHero
+          title='Цагаан сар'
+          subtitle='Монгол зурхайн аргаар бодсон дорнын зурхай'
+          containerClassName='z-10'
+        >
+          <div className='mx-auto mb-4 max-w-md'>
+            <ModernDatePicker
+              selectedDate={startDate}
+              onDateChange={changeDate}
+              placeholder='Жил сонгох'
+              showYearPicker={true}
+            />
           </div>
-        </section>
+        </PageHero>
 
         {/* Lunar New Year Information */}
         <section className='layout py-4'>
@@ -167,23 +138,8 @@ export default function TsagaanSarPage() {
           </div>
         </section>
 
-        {/* Footer */}
-        <footer
-          className={clsx(
-            'border-t py-8',
-            'border-gray-200 bg-white dark:border-gray-800 dark:bg-gray-900'
-          )}
-        >
-          <div className='layout text-center'>
-            <p className={clsx('text-gray-600 dark:text-gray-400')}>
-              © {new Date().getFullYear()} By{' '}
-              <UnderlineLink href='https://github.com/TsPuujee'>
-                Puujee Ts
-              </UnderlineLink>
-            </p>
-          </div>
-        </footer>
-      </main>
+        <SiteFooter />
+      </PageMain>
     </>
   );
 }

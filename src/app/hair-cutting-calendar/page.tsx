@@ -6,10 +6,15 @@ import Image from 'next/image';
 import { useSearchParams } from 'next/navigation';
 import * as React from 'react';
 
+import useThemeToggle from '@/hooks/useThemeToggle';
+
 import LunarInfoCard from '@/components/cards/LunarInfoCard';
+import DayChips from '@/components/chips/DayChips';
 import ModernDatePicker from '@/components/date/ModernDatePicker';
 import Navigation from '@/components/layout/Navigation';
-import UnderlineLink from '@/components/links/UnderlineLink';
+import PageHero from '@/components/layout/PageHero';
+import PageMain from '@/components/layout/PageMain';
+import SiteFooter from '@/components/layout/SiteFooter';
 
 import { getLunarDate } from '@/utils/calendarHelpers';
 
@@ -38,17 +43,7 @@ export default function HairCuttingCalendarPage() {
     generateHairCuttingCalendar(currentMonth);
   }, [currentMonth]);
 
-  // Theme toggle only mutates root class and persists; rendering uses Tailwind dark: variants
-  const toggleMode = React.useCallback(() => {
-    if (typeof document === 'undefined') return;
-    const root = document.documentElement;
-    const isDark = root.classList.toggle('dark');
-    try {
-      localStorage.setItem('theme', isDark ? 'dark' : 'light');
-    } catch {
-      /* noop */
-    }
-  }, []);
+  const toggleMode = useThemeToggle();
 
   const generateHairCuttingCalendar = (month: Date) => {
     const year = month.getFullYear();
@@ -111,44 +106,21 @@ export default function HairCuttingCalendarPage() {
     <>
       <Navigation onToggleMode={toggleMode} />
 
-      <main
-        className={clsx(
-          'min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800'
-        )}
-      >
-        {/* Hero Section */}
-        <section className='relative overflow-hidden'>
-          <div className='layout relative pb-4 pt-12'>
-            <div className='mb-12 text-center'>
-              <h1
-                className={clsx(
-                  'mb-6 text-4xl font-bold md:text-5xl',
-                  'bg-gradient-to-r from-mongolian-600 to-mongolian-800 bg-clip-text text-transparent'
-                )}
-              >
-                Үс засуулах хуанли
-              </h1>
-              <p
-                className={clsx(
-                  'mx-auto max-w-2xl text-lg md:text-xl',
-                  'text-gray-600 dark:text-gray-300'
-                )}
-              >
-                Монгол уламжлалт зурхайн дагуу үс засах сайн муу өдрүүдийн
-                хуанли
-              </p>
-            </div>
-
-            {/* Month Picker */}
-            <div className='mx-auto mb-4 max-w-md'>
-              <ModernDatePicker
-                selectedDate={currentMonth}
-                onDateChange={handleMonthChange}
-                granularity='month'
-              />
-            </div>
+      <PageMain>
+        <PageHero
+          title='Үс засуулах хуанли'
+          subtitle={
+            'Монгол уламжлалт зурхайн дагуу үс засах сайн муу өдрүүдийн\n                хуанли'
+          }
+        >
+          <div className='mx-auto mb-4 max-w-md'>
+            <ModernDatePicker
+              selectedDate={currentMonth}
+              onDateChange={handleMonthChange}
+              granularity='month'
+            />
           </div>
-        </section>
+        </PageHero>
 
         {/* Summary Cards */}
         <section className='layout pb-4'>
@@ -164,16 +136,7 @@ export default function HairCuttingCalendarPage() {
               className='border-2 border-green-300 dark:border-green-600'
             >
               <div className='mt-4'>
-                <div className='flex flex-wrap gap-2'>
-                  {goodDays.map((day, index) => (
-                    <span
-                      key={index}
-                      className='rounded-full bg-green-100 px-3 py-1 text-sm font-medium text-green-800 dark:bg-green-900 dark:text-green-200'
-                    >
-                      {format(day.date, 'dd')}
-                    </span>
-                  ))}
-                </div>
+                <DayChips dates={goodDays.map((d) => d.date)} color='green' />
               </div>
             </LunarInfoCard>
 
@@ -188,16 +151,7 @@ export default function HairCuttingCalendarPage() {
               className='border-2 border-red-300 dark:border-red-600'
             >
               <div className='mt-4'>
-                <div className='flex flex-wrap gap-2'>
-                  {badDays.map((day, index) => (
-                    <span
-                      key={index}
-                      className='rounded-full bg-red-100 px-3 py-1 text-sm font-medium text-red-800 dark:bg-red-900 dark:text-red-200'
-                    >
-                      {format(day.date, 'dd')}
-                    </span>
-                  ))}
-                </div>
+                <DayChips dates={badDays.map((d) => d.date)} color='red' />
               </div>
             </LunarInfoCard>
           </div>
@@ -347,23 +301,8 @@ export default function HairCuttingCalendarPage() {
           </div>
         </section>
 
-        {/* Footer */}
-        <footer
-          className={clsx(
-            'border-t py-8',
-            'border-gray-200 bg-white dark:border-gray-800 dark:bg-gray-900'
-          )}
-        >
-          <div className='layout text-center'>
-            <p className={clsx('text-gray-600 dark:text-gray-400')}>
-              © {new Date().getFullYear()} By{' '}
-              <UnderlineLink href='https://github.com/TsPuujee'>
-                Puujee Ts
-              </UnderlineLink>
-            </p>
-          </div>
-        </footer>
-      </main>
+        <SiteFooter />
+      </PageMain>
     </>
   );
 }
