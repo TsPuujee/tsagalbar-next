@@ -151,24 +151,15 @@ export default function HairCuttingCalendarPage() {
       >
         {/* Hero Section */}
         <section className='relative overflow-hidden'>
-          <div className='absolute inset-0 opacity-5'>
-            <div
-              className='absolute inset-0'
-              style={{
-                backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23000000' fill-opacity='0.1'%3E%3Ccircle cx='30' cy='30' r='2'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`,
-              }}
-            />
-          </div>
-
-          <div className='layout relative z-10 py-16'>
+          <div className='layout relative pb-4 pt-12'>
             <div className='mb-12 text-center'>
               <h1
                 className={clsx(
-                  'mb-6 text-4xl font-bold md:text-6xl',
+                  'mb-4 text-4xl font-bold md:text-6xl',
                   'bg-gradient-to-r from-mongolian-600 to-mongolian-800 bg-clip-text text-transparent'
                 )}
               >
-                ✂️ Үс засах сайн өдрүүд
+                Үс засуулах хуанли
               </h1>
               <p
                 className={clsx(
@@ -182,7 +173,7 @@ export default function HairCuttingCalendarPage() {
             </div>
 
             {/* Month Picker */}
-            <div className='mx-auto mb-16 max-w-md'>
+            <div className='mx-auto mb-4 max-w-md'>
               <ModernDatePicker
                 selectedDate={currentMonth}
                 onDateChange={handleMonthChange}
@@ -194,7 +185,7 @@ export default function HairCuttingCalendarPage() {
         </section>
 
         {/* Summary Cards */}
-        <section className='layout pb-8'>
+        <section className='layout pb-4'>
           <div className='mb-12 grid grid-cols-1 gap-6 md:grid-cols-2'>
             <LunarInfoCard
               title={`${goodDays.length} сайн өдөр`}
@@ -209,7 +200,7 @@ export default function HairCuttingCalendarPage() {
             >
               <div className='mt-4'>
                 <div className='flex flex-wrap gap-2'>
-                  {goodDays.slice(0, 5).map((day, index) => (
+                  {goodDays.map((day, index) => (
                     <span
                       key={index}
                       className='rounded-full bg-green-100 px-3 py-1 text-sm font-medium text-green-800 dark:bg-green-900 dark:text-green-200'
@@ -217,11 +208,6 @@ export default function HairCuttingCalendarPage() {
                       {format(day.date, 'dd')}
                     </span>
                   ))}
-                  {goodDays.length > 5 && (
-                    <span className='rounded-full bg-gray-100 px-3 py-1 text-sm text-gray-600 dark:bg-gray-800 dark:text-gray-400'>
-                      +{goodDays.length - 5} өдөр
-                    </span>
-                  )}
                 </div>
               </div>
             </LunarInfoCard>
@@ -239,7 +225,7 @@ export default function HairCuttingCalendarPage() {
             >
               <div className='mt-4'>
                 <div className='flex flex-wrap gap-2'>
-                  {badDays.slice(0, 5).map((day, index) => (
+                  {badDays.map((day, index) => (
                     <span
                       key={index}
                       className='rounded-full bg-red-100 px-3 py-1 text-sm font-medium text-red-800 dark:bg-red-900 dark:text-red-200'
@@ -247,11 +233,6 @@ export default function HairCuttingCalendarPage() {
                       {format(day.date, 'dd')}
                     </span>
                   ))}
-                  {badDays.length > 5 && (
-                    <span className='rounded-full bg-gray-100 px-3 py-1 text-sm text-gray-600 dark:bg-gray-800 dark:text-gray-400'>
-                      +{badDays.length - 5} өдөр
-                    </span>
-                  )}
                 </div>
               </div>
             </LunarInfoCard>
@@ -259,7 +240,7 @@ export default function HairCuttingCalendarPage() {
         </section>
 
         {/* Calendar Grid */}
-        <section className='layout pb-16'>
+        <section className='layout pb-14'>
           <div className='overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-xl dark:border-gray-700 dark:bg-gray-900'>
             <div
               className={clsx(
@@ -275,7 +256,7 @@ export default function HairCuttingCalendarPage() {
                   mode === 'dark' ? 'text-white' : 'text-gray-900'
                 )}
               >
-                {format(currentMonth, 'yyyy оны M сар')} - Үс засах хуанли
+                {format(currentMonth, 'yyyy оны M сар')}
               </h2>
             </div>
 
@@ -400,7 +381,7 @@ export default function HairCuttingCalendarPage() {
                     mode === 'dark' ? 'text-gray-300' : 'text-gray-600'
                   )}
                 >
-                  Сайн өдөр - үс засах зөв
+                  Сайн өдөр - Үс засуулахад тохиромжтой
                 </span>
               </div>
               <div className='flex items-center space-x-3'>
@@ -410,7 +391,7 @@ export default function HairCuttingCalendarPage() {
                     mode === 'dark' ? 'text-gray-300' : 'text-gray-600'
                   )}
                 >
-                  Муу өдөр - үс засах зөв биш
+                  Муу өдөр - Үс засуулахад тохиромжгүй
                 </span>
               </div>
             </div>

@@ -19,7 +19,7 @@ export default function Navigation({ onToggleMode }: NavigationProps) {
     { href: '/tsagaan-sar', label: 'Цагаан сар', icon: '🏮' },
     {
       href: '/hair-cutting-calendar',
-      label: 'Үс засах сайн өдрүүд',
+      label: 'Үс засуулах хуанли',
       icon: '✂️',
     },
   ];

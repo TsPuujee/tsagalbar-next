@@ -36,7 +36,7 @@ export default function TsagaanSarPage() {
     const yearParam = searchParams?.get('year');
     const initialYear = yearParam
       ? parseInt(yearParam, 10)
-      : new Date().getFullYear();
+      : new Date().getFullYear() + 1;
     const initialDate = new Date(initialYear, 0, 1);
     setStartDate(initialDate);
 
@@ -107,16 +107,7 @@ export default function TsagaanSarPage() {
       >
         {/* Hero Section */}
         <section className='relative overflow-hidden'>
-          <div className='absolute inset-0 opacity-5'>
-            <div
-              className='absolute inset-0'
-              style={{
-                backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23000000' fill-opacity='0.1'%3E%3Ccircle cx='30' cy='30' r='2'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`,
-              }}
-            />
-          </div>
-
-          <div className='layout relative z-10 py-16'>
+          <div className='layout relative z-10 pt-12'>
             <div className='mb-12 text-center'>
               <h1
                 className={clsx(
@@ -124,7 +115,7 @@ export default function TsagaanSarPage() {
                   'bg-gradient-to-r from-mongolian-600 to-mongolian-800 bg-clip-text text-transparent'
                 )}
               >
-                🏮 Цагаан сар
+                Цагаан сар
               </h1>
               <p
                 className={clsx(
@@ -132,12 +123,12 @@ export default function TsagaanSarPage() {
                   mode === 'dark' ? 'text-gray-300' : 'text-gray-600'
                 )}
               >
-                Монгол шинийн баяр - Цагаан сарын мэдээлэл
+                Монгол зурхайн аргаар бодсон дорнын зурхай
               </p>
             </div>
 
             {/* Year Picker */}
-            <div className='mx-auto mb-16 max-w-md'>
+            <div className='mx-auto mb-4 max-w-md'>
               <ModernDatePicker
                 selectedDate={startDate}
                 onDateChange={changeDate}
@@ -150,7 +141,7 @@ export default function TsagaanSarPage() {
         </section>
 
         {/* Lunar New Year Information */}
-        <section className='layout pb-16'>
+        <section className='layout py-4'>
           <div className='mx-auto max-w-4xl'>
             <LunarInfoCard
               title={`${selectedDateData.year} жил`}
