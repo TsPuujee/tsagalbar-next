@@ -1,0 +1,84 @@
+{
+  "navigation": {
+    "home": "Home",
+    "hairCutting": "Hair Cutting",
+    "tsagaanSar": "Tsagaan Sar",
+    "toggleTheme": "Toggle Theme"
+  },
+  "home": {
+    "title": "Eastern Astrology",
+    "subtitle": "Eastern astrology calculated by Mongolian astrology methods",
+    "datePicker": "Select Date",
+    "yearInfo": "Year astrology information",
+    "monthInfo": "Month astrology information",
+    "dayInfo": "Day astrology information",
+    "hairCuttingInfo": "Hair cutting good day information",
+    "hairCuttingResult": "If you cut hair",
+    "goodDay": "Good day",
+    "badDay": "Bad day",
+    "copyright": "© {year} By {author}"
+  },
+  "hairCutting": {
+    "title": "Hair Cutting Calendar",
+    "subtitle": "Good days for cutting hair according to Mongolian astrology",
+    "goodDays": "Good Days",
+    "badDays": "Bad Days",
+    "selectMonth": "Select Month",
+    "legend": {
+      "good": "Good day for cutting hair",
+      "bad": "Bad day for cutting hair",
+      "today": "Today"
+    }
+  },
+  "tsagaanSar": {
+    "title": "Tsagaan Sar",
+    "subtitle": "Mongolian Traditional New Year",
+    "selectYear": "Select Year",
+    "year": "year",
+    "date": "Date",
+    "dayOfWeek": "Day of Week",
+    "lunarDate": "Lunar Calendar",
+    "zodiac": "Zodiac",
+    "element": "Element",
+    "color": "Color",
+    "direction": "Direction",
+    "description": "Description"
+  },
+  "common": {
+    "loading": "Loading...",
+    "error": "An error occurred",
+    "retry": "Retry",
+    "back": "Back",
+    "next": "Next",
+    "previous": "Previous",
+    "close": "Close",
+    "save": "Save",
+    "cancel": "Cancel",
+    "confirm": "Confirm",
+    "yes": "Yes",
+    "no": "No",
+    "language": "Language"
+  },
+  "lunar": {
+    "year": "{jaran}th jaran {jilCycleName} {jil} year",
+    "month": "{sar} {sarJil} month with {sarMenge} meng",
+    "day": "{odorMenge} meng {odorAnimal} day with {odorSuudal} seat in {odorBilgiinToolol} bilgiin toolol"
+  },
+  "goodRecommendations": [
+    "Livestock will be prosperous and stable",
+    "Physical strength will improve",
+    "Livestock will multiply",
+    "Complexion will improve",
+    "Life will be extended",
+    "Energy will increase",
+    "Organs will become sharp",
+    "Happiness will come",
+    "Livestock will multiply",
+    "Fortunate and good",
+    "Will make good friends",
+    "Food and drink will be abundant",
+    "Possessions and food will be available",
+    "Happiness will continue forever",
+    "Fortunate and good"
+  ]
+}

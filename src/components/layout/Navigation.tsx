@@ -13,23 +13,48 @@ import {
   FaSun,
   FaTimes,
   FaYinYang,
+  FaGlobe,
 } from 'react-icons/fa';
+import { useTranslations, useLocale } from 'next-intl';
 interface NavigationProps {
   onToggleMode: () => void;
 }
 
 export default function Navigation({ onToggleMode }: NavigationProps) {
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
+  const [isLanguageMenuOpen, setIsLanguageMenuOpen] = React.useState(false);
   const pathname = usePathname();
+  const t = useTranslations();
+  const locale = useLocale();
+  const languageMenuRef = React.useRef<HTMLDivElement>(null);
+
+  // Close language menu when clicking outside
+  React.useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (languageMenuRef.current && !languageMenuRef.current.contains(event.target as Node)) {
+        setIsLanguageMenuOpen(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
 
   const navItems = [
-    { href: '/', label: 'Дорнын зурхай', icon: <FaYinYang /> },
-    { href: '/tsagaan-sar', label: 'Цагаан сар', icon: <FaCalendarAlt /> },
+    { href: '/', label: t('navigation.home'), icon: <FaYinYang /> },
+    { href: '/tsagaan-sar', label: t('navigation.tsagaanSar'), icon: <FaCalendarAlt /> },
     {
       href: '/hair-cutting-calendar',
-      label: 'Үс засуулах хуанли',
+      label: t('navigation.hairCutting'),
       icon: <FaCut />,
     },
+  ];
+
+  const languages = [
+    { code: 'mn', name: 'Монгол', flag: '🇲🇳' },
+    { code: 'en', name: 'English', flag: '🇺🇸' },
   ];
 
   const LinkItem = ({
@@ -44,10 +69,10 @@ export default function Navigation({ onToggleMode }: NavigationProps) {
     onClick?: () => void;
   }) => {
     const isActive =
-      href === '/' ? pathname === '/' : pathname.startsWith(href);
+      href === '/' ? pathname.endsWith('/') : pathname.includes(href);
     return (
       <Link
-        href={href}
+        href={`/${locale}${href}`}
         aria-current={isActive ? 'page' : undefined}
         onClick={onClick}
         className={clsx(
@@ -63,6 +88,11 @@ export default function Navigation({ onToggleMode }: NavigationProps) {
     );
   };
 
+  const switchLanguage = (newLocale: string) => {
+    const currentPath = pathname.replace(`/${locale}`, '') || '/';
+    window.location.href = `/${newLocale}${currentPath}`;
+  };
+
   return (
     <nav
       className={clsx(
@@ -75,7 +105,7 @@ export default function Navigation({ onToggleMode }: NavigationProps) {
         <div className='flex items-center justify-between px-4 py-4'>
           {/* Logo */}
           <Link
-            href='/'
+            href={`/${locale}`}
             className='flex items-center space-x-2 text-xl font-bold'
           >
             <Image
@@ -103,8 +133,44 @@ export default function Navigation({ onToggleMode }: NavigationProps) {
             ))}
           </div>
 
-          {/* Theme Toggle & Mobile Menu */}
+          {/* Theme Toggle, Language Switcher & Mobile Menu */}
           <div className='flex items-center space-x-2'>
+            {/* Language Switcher */}
+            <div className='relative' ref={languageMenuRef}>
+              <button
+                onClick={() => setIsLanguageMenuOpen(!isLanguageMenuOpen)}
+                className={clsx(
+                  'flex h-10 w-10 items-center justify-center rounded-lg',
+                  'bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-300'
+                )}
+              >
+                <FaGlobe className='text-lg' />
+              </button>
+              
+              {isLanguageMenuOpen && (
+                <div className='absolute right-0 top-12 z-50 rounded-lg border border-gray-200 bg-white shadow-lg dark:border-gray-700 dark:bg-gray-800'>
+                  {languages.map((lang) => (
+                    <button
+                      key={lang.code}
+                      onClick={() => {
+                        switchLanguage(lang.code);
+                        setIsLanguageMenuOpen(false);
+                      }}
+                      className={clsx(
+                        'flex w-full items-center space-x-2 rounded-lg px-4 py-2 text-left transition-colors',
+                        locale === lang.code
+                          ? 'bg-mongolian-100 text-mongolian-900 dark:bg-gray-700 dark:text-white'
+                          : 'text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-700'
+                      )}
+                    >
+                      <span className='text-lg'>{lang.flag}</span>
+                      <span className='font-medium'>{lang.name}</span>
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
+
             <button
               onClick={onToggleMode}
               className={clsx(
@@ -159,6 +225,33 @@ export default function Navigation({ onToggleMode }: NavigationProps) {
                   onClick={() => setIsMenuOpen(false)}
                 />
               ))}
+              
+              {/* Mobile Language Switcher */}
+              <div className='border-t border-gray-200 pt-2 dark:border-gray-700'>
+                <div className='text-sm font-medium text-gray-500 dark:text-gray-400 mb-2'>
+                  {t('common.language')}
+                </div>
+                <div className='grid grid-cols-2 gap-2'>
+                  {languages.map((lang) => (
+                    <button
+                      key={lang.code}
+                      onClick={() => {
+                        switchLanguage(lang.code);
+                        setIsMenuOpen(false);
+                      }}
+                      className={clsx(
+                        'flex items-center space-x-2 rounded-lg px-3 py-2 text-sm transition-colors',
+                        locale === lang.code
+                          ? 'bg-mongolian-100 text-mongolian-900 dark:bg-gray-700 dark:text-white'
+                          : 'text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-700'
+                      )}
+                    >
+                      <span>{lang.flag}</span>
+                      <span className='font-medium'>{lang.name}</span>
+                    </button>
+                  ))}
+                </div>
+              </div>
             </div>
           </div>
         )}
