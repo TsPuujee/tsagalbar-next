@@ -17,19 +17,25 @@ export const metadata: Metadata = {
     template: '%s | Цагалбар',
     default: 'Цагалбар - Монгол уламжлалт зурхай',
   },
-  description:
-    'Монгол уламжлалт тооллын дагуу өдрийн сайн муугийг мэдэж авцгаая',
+  description: 'Монгол зурхайн тооллоор өдөр тутмын зөвлөмж, сайн муу өдрүүд',
   keywords: ['монгол', 'зурхай', 'тоолол', 'лунар', 'цагалбар', 'цагаан сар'],
   authors: [{ name: 'Puujee Ts', url: 'https://github.com/TsPuujee' }],
   creator: 'Puujee Ts',
+  applicationName: 'Цагалбар',
+  alternates: {
+    canonical: '/',
+    languages: {
+      mn: '/',
+      'mn-MN': '/',
+    },
+  },
   openGraph: {
     type: 'website',
     locale: 'mn_MN',
     url: 'https://tsagalbar.vercel.app',
     siteName: 'Цагалбар',
     title: 'Цагалбар - Монгол уламжлалт зурхай',
-    description:
-      'Монгол уламжлалт тооллын дагуу өдрийн сайн муугийг мэдэж авцгаая',
+    description: 'Монгол зурхайн тооллоор өдөр тутмын зөвлөмж, сайн муу өдрүүд',
     images: [
       {
         url: '/images/1.png',
@@ -42,8 +48,7 @@ export const metadata: Metadata = {
   twitter: {
     card: 'summary_large_image',
     title: 'Цагалбар - Монгол уламжлалт зурхай',
-    description:
-      'Монгол уламжлалт тооллын дагуу өдрийн сайн муугийг мэдэж авцгаая',
+    description: 'Монгол зурхайн тооллоор өдөр тутмын зөвлөмж, сайн муу өдрүүд',
     images: ['/images/1.png'],
   },
   robots: {
@@ -60,6 +65,38 @@ export const metadata: Metadata = {
   verification: {
     google: 'your-google-verification-code',
   },
+  icons: {
+    icon: [
+      { url: '/favicon.ico' },
+      { url: '/favicon/favicon-16x16.png', sizes: '16x16', type: 'image/png' },
+      { url: '/favicon/favicon-32x32.png', sizes: '32x32', type: 'image/png' },
+      {
+        url: '/favicon/android-icon-192x192.png',
+        sizes: '192x192',
+        type: 'image/png',
+      },
+    ],
+    apple: [
+      {
+        url: '/favicon/apple-touch-icon.png',
+        sizes: '180x180',
+        type: 'image/png',
+      },
+    ],
+    shortcut: ['/favicon.ico'],
+  },
+  manifest: '/favicon/site.webmanifest',
+  themeColor: [
+    { media: '(prefers-color-scheme: light)', color: '#ffffff' },
+    { media: '(prefers-color-scheme: dark)', color: '#0b1020' },
+  ],
+};
+
+export const viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  maximumScale: 5,
+  userScalable: true,
 };
 
 export default function RootLayout({
@@ -90,6 +127,47 @@ export default function RootLayout({
       </head>
       <body className={`${inter.className} antialiased`}>
         {children}
+        <Script
+          id='ld-json-website'
+          type='application/ld+json'
+          strategy='afterInteractive'
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              '@context': 'https://schema.org',
+              '@type': 'WebSite',
+              name: 'Цагалбар',
+              url: 'https://tsagalbar.vercel.app',
+              inLanguage: 'mn-MN',
+              description:
+                'Монгол зурхайн тооллоор өдөр тутмын зөвлөмж, сайн муу өдрүүд',
+              publisher: {
+                '@type': 'Organization',
+                '@id': 'https://tsagalbar.vercel.app/#organization',
+                name: 'Цагалбар',
+                url: 'https://tsagalbar.vercel.app',
+              },
+            }),
+          }}
+        />
+        <Script
+          id='ld-json-organization'
+          type='application/ld+json'
+          strategy='afterInteractive'
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              '@context': 'https://schema.org',
+              '@type': 'Organization',
+              '@id': 'https://tsagalbar.vercel.app/#organization',
+              name: 'Цагалбар',
+              url: 'https://tsagalbar.vercel.app',
+              sameAs: ['https://github.com/TsPuujee'],
+              logo: {
+                '@type': 'ImageObject',
+                url: 'https://tsagalbar.vercel.app/favicon/favicon-96x96.png',
+              },
+            }),
+          }}
+        />
         <Script
           strategy='afterInteractive'
           src='https://unpkg.com/flowbite@1.5.3/dist/datepicker.js'

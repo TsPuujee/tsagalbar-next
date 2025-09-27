@@ -1,6 +1,11 @@
+import type { Metadata } from 'next';
 import Image from 'next/image';
 import Link from 'next/link';
 import * as React from 'react';
+
+export const metadata: Metadata = {
+  robots: { index: false, follow: false, nocache: true },
+};
 
 export default function NotFound() {
   return (
