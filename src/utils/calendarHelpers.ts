@@ -182,16 +182,14 @@ export function getLunarDate(year: number, month: number, day: number) {
   const yearAttributes = attribYear(lunarMonth.year);
   let lunarDayNumber = 1;
 
-  // Лунар сарын 1-ээс 30 хүртэлх өдөрүүдийг шалгаж, тухайн огноотой таарах өдрийг олно.
-  for (let i = 1; i < 31; i++) {
-    const tempDate = julianDayToGregorian(
-      julianDay(lunarMonth.year, lunarMonth.month, lunarMonth.leap, i)
+  for (let i = 1; i <= 30; i++) {
+    const lunarDayEndJd = julianDay(
+      lunarMonth.year,
+      lunarMonth.month,
+      lunarMonth.leap,
+      i
     );
-    if (
-      tempDate.year === year &&
-      tempDate.month === month &&
-      tempDate.day === day
-    ) {
+    if (jd <= lunarDayEndJd) {
       lunarDayNumber = i;
       break;
     }
