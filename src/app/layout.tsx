@@ -86,10 +86,6 @@ export const metadata: Metadata = {
     shortcut: ['/favicon.ico'],
   },
   manifest: '/favicon/site.webmanifest',
-  themeColor: [
-    { media: '(prefers-color-scheme: light)', color: '#ffffff' },
-    { media: '(prefers-color-scheme: dark)', color: '#0b1020' },
-  ],
 };
 
 export const viewport = {
@@ -97,6 +93,10 @@ export const viewport = {
   initialScale: 1,
   maximumScale: 5,
   userScalable: true,
+  themeColor: [
+    { media: '(prefers-color-scheme: light)', color: '#ffffff' },
+    { media: '(prefers-color-scheme: dark)', color: '#0b1020' },
+  ],
 };
 
 export default function RootLayout({
