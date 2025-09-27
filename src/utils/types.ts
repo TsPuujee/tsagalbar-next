@@ -9,5 +9,3 @@ export interface MonthAttributes {
   number: number;
   colour9: string;
 }
-
-

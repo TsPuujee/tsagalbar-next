@@ -64,5 +64,3 @@ export const MOON_PHASE_PRECISION = { EPSILON: 0.0001, MIN_DELTA: 0.001 };
 
 // Лавлах Julian Day (J2000.0 = 2451545). Тооцооллыг тогтвортой болгох үүднээс хэрэглэнэ.
 export const REFERENCE_EPOCH = { JD: 2451545 };
-
-

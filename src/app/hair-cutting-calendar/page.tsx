@@ -45,6 +45,17 @@ export default function HairCuttingCalendarPage() {
 
   const toggleMode = useThemeToggle();
 
+  // Week alignment helpers (Sunday = 0)
+  const startDayOfWeek = React.useMemo(() => {
+    const dow = new Date(
+      currentMonth.getFullYear(),
+      currentMonth.getMonth(),
+      1
+    ).getDay();
+    // Convert to Monday-first index: Mon=0,...,Sun=6
+    return (dow + 6) % 7;
+  }, [currentMonth]);
+
   const generateHairCuttingCalendar = (month: Date) => {
     const year = month.getFullYear();
     const monthNum = month.getMonth() + 1;
@@ -122,41 +133,6 @@ export default function HairCuttingCalendarPage() {
           </div>
         </PageHero>
 
-        {/* Summary Cards */}
-        <section className='layout pb-4'>
-          <div className='mb-12 grid grid-cols-1 gap-6 md:grid-cols-2'>
-            <LunarInfoCard
-              title={`${goodDays.length} сайн өдөр`}
-              description={`${format(
-                currentMonth,
-                'yyyy оны M сар'
-              )}д үс засах сайн өдрүүд`}
-              imageSrc='/images/good-haircut.png'
-              imageAlt='Үс засах сайн өдөр'
-              className='border-2 border-green-300 dark:border-green-600'
-            >
-              <div className='mt-4'>
-                <DayChips dates={goodDays.map((d) => d.date)} color='green' />
-              </div>
-            </LunarInfoCard>
-
-            <LunarInfoCard
-              title={`${badDays.length} муу өдөр`}
-              description={`${format(
-                currentMonth,
-                'yyyy оны M сар'
-              )}д үс засах муу өдрүүд`}
-              imageSrc='/images/bad-haircut.png'
-              imageAlt='Үс засах муу өдөр'
-              className='border-2 border-red-300 dark:border-red-600'
-            >
-              <div className='mt-4'>
-                <DayChips dates={badDays.map((d) => d.date)} color='red' />
-              </div>
-            </LunarInfoCard>
-          </div>
-        </section>
-
         {/* Calendar Grid */}
         <section className='layout pb-14'>
           <div className='overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-xl dark:border-gray-700 dark:bg-gray-900'>
@@ -193,6 +169,11 @@ export default function HairCuttingCalendarPage() {
               </div>
 
               <div className='grid grid-cols-7 gap-2'>
+                {/* Leading empty placeholders so the 1st aligns with its weekday */}
+                {Array.from({ length: startDayOfWeek }).map((_, i) => (
+                  <div key={`leading-empty-${i}`} />
+                ))}
+
                 {calendarDays.map((day, index) => {
                   const isToday = format(day.date, 'yyyy-MM-dd') === todayStr;
                   return (
@@ -268,36 +249,51 @@ export default function HairCuttingCalendarPage() {
                     </div>
                   );
                 })}
+
+                {/* Trailing placeholders to complete the last week */}
+                {Array.from({
+                  length:
+                    (7 - ((startDayOfWeek + calendarDays.length) % 7)) % 7,
+                }).map((_, i) => (
+                  <div key={`trailing-empty-${i}`} />
+                ))}
               </div>
             </div>
           </div>
         </section>
 
-        {/* Legend */}
+        {/* Summary Cards */}
         <section className='layout pb-16'>
-          <div className='rounded-xl border border-gray-200 bg-white p-6 shadow-lg dark:border-gray-700 dark:bg-gray-900'>
-            <h3
-              className={clsx(
-                'mb-4 text-xl font-bold',
-                'text-gray-900 dark:text-white'
-              )}
+          <div className='mb-12 grid grid-cols-1 gap-6 md:grid-cols-2'>
+            <LunarInfoCard
+              title={`${goodDays.length} сайн өдөр`}
+              description={`${format(
+                currentMonth,
+                'yyyy оны M сар'
+              )}д үс засах сайн өдрүүд`}
+              imageSrc='/images/good-haircut.png'
+              imageAlt='Үс засах сайн өдөр'
+              className='border-2 border-green-300 dark:border-green-600'
             >
-              Тайлбар
-            </h3>
-            <div className='grid grid-cols-1 gap-4 md:grid-cols-2'>
-              <div className='flex items-center space-x-3'>
-                <div className='h-4 w-4 rounded-full bg-green-500'></div>
-                <span className={clsx('text-gray-600 dark:text-gray-300')}>
-                  Сайн өдөр - Үс засуулахад тохиромжтой
-                </span>
+              <div className='mt-4'>
+                <DayChips dates={goodDays.map((d) => d.date)} color='green' />
               </div>
-              <div className='flex items-center space-x-3'>
-                <div className='h-4 w-4 rounded-full bg-red-500'></div>
-                <span className={clsx('text-gray-600 dark:text-gray-300')}>
-                  Муу өдөр - Үс засуулахад тохиромжгүй
-                </span>
+            </LunarInfoCard>
+
+            <LunarInfoCard
+              title={`${badDays.length} муу өдөр`}
+              description={`${format(
+                currentMonth,
+                'yyyy оны M сар'
+              )}д үс засах муу өдрүүд`}
+              imageSrc='/images/bad-haircut.png'
+              imageAlt='Үс засах муу өдөр'
+              className='border-2 border-red-300 dark:border-red-600'
+            >
+              <div className='mt-4'>
+                <DayChips dates={badDays.map((d) => d.date)} color='red' />
               </div>
-            </div>
+            </LunarInfoCard>
           </div>
         </section>
 

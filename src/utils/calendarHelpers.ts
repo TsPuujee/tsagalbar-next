@@ -1,8 +1,15 @@
 import { attribDay, attribYear, usZasuulahForDay } from './attribUtils';
-import { ANIMAL, COLOUR, COLOUR9, ELEMENT_NAME, ELEMENT8, MMN, NUMBERN } from './constants/index';
+import {
+  ANIMAL,
+  COLOUR,
+  COLOUR9,
+  ELEMENT_NAME,
+  ELEMENT8,
+  MMN,
+  NUMBERN,
+} from './constants/index';
 import { amod, julianDay, leapMonth } from './dateUtils';
 import type { LunarMonth, MonthAttributes } from './types';
-
 
 /**
  * Билгийн тооллын өмнөх сар руу шилжүүлэх туслах функц.
@@ -243,7 +250,10 @@ export function getLunarDate(year: number, month: number, day: number) {
  * @param month - Билгийн тооллын сарын дугаар
  * @returns Сарын шинж чанаруудыг агуулсан объект
  */
-export function getMonthAttributes(year: number, month: number): MonthAttributes {
+export function getMonthAttributes(
+  year: number,
+  month: number
+): MonthAttributes {
   const animal = ANIMAL[(month + 1) % 12];
   const animal_number = (month + 1) % 12;
   const t = amod(year - 2 + Math.floor((month - 1) / 2), 5);

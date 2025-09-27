@@ -17,7 +17,8 @@ export const leapMonth = (Y: number, M: number): boolean => {
 /**
  * Сар тооцооллын туслах индекс.
  */
-export const Mstar = (Y: number, M: number): number => 12 * (Y - EPOCH) + M - MZERO;
+export const Mstar = (Y: number, M: number): number =>
+  12 * (Y - EPOCH) + M - MZERO;
 
 /**
  * Билгийн тооллын жинхэнэ сарын индексийг тооцоолно.
