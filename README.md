@@ -2,14 +2,41 @@
 Цагаан сар тооцоологчтой
 <https://tsagalbar.vercel.app/>
 
-## Api description
+## Суурилуулалт ба ажиллуулах
 
-- `GET /api?date=2025-02-28` - Get data by date and date is optional
+- Node.js 18+
+- Yarn
+
+```bash
+yarn
+yarn dev
+```
+
+Build хийх ба production эхлүүлэх:
+
+```bash
+yarn build
+yarn start
+```
+
+## API
+
+Доорх 2 endpoint-ыг GET болон POST хэлбэрээр дэмжинэ. Параметр өгөөгүй үед сервер тухайн өдрийн/оны мэдээллийг тооцоолж буцаана.
+
+- Тайлбар:
+
+  - `date` query/body нь `YYYY-MM-DD` форматтай байна.
+  - `year` query/body нь `YYYY` форматтай байна.
+  - Зурагны замууд `https://tsagalbar.vercel.app/images/...` хэлбэрээр буцна.
+  - `/api` хариуны `data.date` нь серверийн өнөөдрийн огноог илэрхийлдэг; харин `data.data` хэсэг нь таны илгээсэн огнооны дагуух мэдээлэл байна.
+
+- `GET /api?date=2025-02-28` — Өдрөөр мэдээлэл авах (date сонголттой)
+- `POST /api` — Өдрөөр мэдээлэл авах (body-д `{"date": "YYYY-MM-DD"}`)
 
   ```json
   {
     "data": {
-      "date": "2025-02-28",
+      "date": "YYYY-MM-DD",
       "data": {
         "jaran": 17,
         "jil": "хөх луу",
@@ -31,7 +58,8 @@
   }
   ```
 
-- `GET /api/lunar?year=2025` - Get lunar data by year and year is optional
+- `GET /api/lunar?year=2025` — Жилийн (Цагаан сарын) мэдээлэл (year сонголттой)
+- `POST /api/lunar` — Жилийн мэдээлэл (body-д `{"year": "YYYY"}`)
 
   ```json
   {
@@ -54,12 +82,28 @@
   }
   ```
 
-## Example
+## Жишээ хүсэлтүүд
 
 - `curl https://tsagalbar.vercel.app/api`
 - `curl https://tsagalbar.vercel.app/api?date=2023-05-23`
 - `curl https://tsagalbar.vercel.app/api/lunar`
 - `curl https://tsagalbar.vercel.app/api/lunar?year=2022`
+
+POST жишээ:
+
+```bash
+curl -X POST \
+  -H "Content-Type: application/json" \
+  -d '{"date":"2025-02-28"}' \
+  https://tsagalbar.vercel.app/api
+```
+
+```bash
+curl -X POST \
+  -H "Content-Type: application/json" \
+  -d '{"year":"2025"}' \
+  https://tsagalbar.vercel.app/api/lunar
+```
 
 ## Screenshots
 
