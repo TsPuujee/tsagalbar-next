@@ -1,3 +1,9 @@
+/**
+ * Жилийн амьтнаас хамаарч дүрсний замыг тодорхойлно.
+ *
+ * @param jil - Жилийн амьтны нэр
+ * @returns Дүрсний зам
+ */
 export function imageCalculator(jil: string) {
   switch (jil) {
     case 'хулгана':

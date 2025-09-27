@@ -1,14 +1,12 @@
-import {
-  ANIMAL,
-  ANIMALIN,
-  COLOUR,
-  COLOUR9,
-  CYCLENAME,
-  ELEMENT_NAME,
-  US_ZASUULAH,
-} from './constants';
+import { ANIMAL, ANIMALIN, COLOUR, COLOUR9, CYCLENAME, ELEMENT_NAME, US_ZASUULAH } from './constants';
 import { amod } from './dateUtils';
 
+/**
+ * Билгийн тооллын өдрийг тодорхойлох шинжүүдийг Julian Day-аас тооцоолно.
+ *
+ * @param jd - Julian Day Number
+ * @returns Өдрийн амьтан, махбод, мэнгэ, суудал зэрэг шинжүүд
+ */
 export function attribDay(jd: number) {
   const ans: any = {};
   ans.animal = amod(jd + 2, 12);
@@ -23,6 +21,12 @@ export function attribDay(jd: number) {
   return ans;
 }
 
+/**
+ * Билгийн тооллын жилийн шинжүүдийг тооцоолно.
+ *
+ * @param Y - Жил
+ * @returns Жилийн амьтан, махбод, мэнгэ, жарны нэр зэрэг шинжүүд
+ */
 export function attribYear(Y: number) {
   const ans: any = {};
   ans.year = amod(Y - 6, 60);
@@ -39,6 +43,12 @@ export function attribYear(Y: number) {
   return ans;
 }
 
+/**
+ * Билгийн тооллын өдрийн үс засуулах төлөвийг буцаана.
+ *
+ * @param dayIndex - Билгийн тооллын өдрийн дугаар (1-30)
+ * @returns Тухайн өдрийн үс засуулах зөвлөмж
+ */
 export function usZasuulahForDay(dayIndex: number) {
   return US_ZASUULAH[dayIndex - 1];
 }

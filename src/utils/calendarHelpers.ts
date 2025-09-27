@@ -1,17 +1,24 @@
 import { attribDay, attribYear, usZasuulahForDay } from './attribUtils';
-import {
-  ANIMAL,
-  COLOUR,
-  COLOUR9,
-  ELEMENT_NAME,
-  ELEMENT8,
-  MMN,
-  NUMBERN,
-} from './constants';
+import { ANIMAL, COLOUR, COLOUR9, ELEMENT_NAME, ELEMENT8, MMN, NUMBERN } from './constants';
 import { amod, julianDay, leapMonth } from './dateUtils';
+import type { LunarMonth, MonthAttributes } from './types';
 
-function getPreviousLunarMonth(year: number, month: number, isLeap: number) {
-  const prevMonthData = { year, month, leap: isLeap };
+// Types moved to utils/types
+
+/**
+ * Билгийн тооллын өмнөх сар руу шилжүүлэх туслах функц.
+ *
+ * @param year - Билгийн тооллын жил
+ * @param month - Билгийн тооллын сар
+ * @param isLeap - Илүү сар эсэх (0 эсвэл 1)
+ * @returns Өмнөх сарын жил, сар, илүү эсэхийн тухай мэдээлэл
+ */
+function getPreviousLunarMonth(
+  year: number,
+  month: number,
+  isLeap: number
+): LunarMonth {
+  const prevMonthData: LunarMonth = { year, month, leap: isLeap };
   if (leapMonth(year, month)) {
     if (isLeap) {
       // Хэрэв одоогийн сар нэмэлт бол өмнөх сар нь энгийн хувилбар болно
@@ -32,12 +39,12 @@ function getPreviousLunarMonth(year: number, month: number, isLeap: number) {
 }
 
 /**
- * Өгөгдсөн лунар сарын өмнөх сарын сард дахь 30-ны өдөр (Julian Day) дээр суурилан
- * тухайн сарын эхний өдрийн Julian Day-г олдог.
+ * Өгөгдсөн Билгийн тооллын сарын өмнөх сарын 30-ны өдөр (Julian Day) дээр суурилан
+ * тухайн сарын эхний өдрийн Julian Day-г олно.
  *
- * @param year - Лунар оны жил
- * @param month - Лунар сарын дугаар
- * @param isLeap - Лунар сарын нэмэлт тэмдэг (0 эсвэл 1)
+ * @param year - Билгийн тооллын жил
+ * @param month - Билгийн тооллын сарын дугаар
+ * @param isLeap - Билгийн тооллын илүү сар тэмдэг (0 эсвэл 1)
  * @returns Эхний өдрийн Julian Day
  */
 export function getFirstDayJulian(year: number, month: number, isLeap: number) {
@@ -49,11 +56,11 @@ export function getFirstDayJulian(year: number, month: number, isLeap: number) {
 }
 
 /**
- * Өгөгдсөн лунар сарын 30-ны өдрийн Julian Day-г буцаана.
+ * Өгөгдсөн Билгийн тооллын сарын 30-ны өдрийн Julian Day-г буцаана.
  *
- * @param year - Лунар оны жил
- * @param month - Лунар сарын дугаар
- * @param isLeap - Лунар сарын нэмэлт тэмдэг (0 эсвэл 1)
+ * @param year - Билгийн тооллын жил
+ * @param month - Билгийн тооллын сарын дугаар
+ * @param isLeap - Билгийн тооллын илүү сар тэмдэг (0 эсвэл 1)
  * @returns Сүүлийн өдрийн Julian Day
  */
 export function getLastDayJulian(year: number, month: number, isLeap: number) {
@@ -61,17 +68,18 @@ export function getLastDayJulian(year: number, month: number, isLeap: number) {
 }
 
 /**
- * Өгөгдсөн он, сар, өдрийн Gregorian огнооноос тухайн лунар сарын дугаар, жил, нэмэлт тэмдэгийг олдог.
- * Бичлэгийг 50 удаа давтан шалгасны дараа олдохгүй бол эцсийн үр дүнг буцаана.
+ * Өгөгдсөн он, сар, өдрөөс Gregorian огноог ашиглан тухайн Билгийн тооллын сарын
+ * дугаар, жил, илүү эсэхийг тодорхойлно. 50 удаагийн шалгалтаар олдохгүй бол
+ * тухайн мөчийн хамгийн сүүлийн тооцооллыг буцаана.
  *
  * @param year - Gregorian оны жил
  * @param month - Gregorian сарын дугаар
  * @param day - Gregorian өдрийн дугаар
- * @returns Лунар сарын мэдээлэл объект (жил, сар, нэмэлт тэмдэг)
+ * @returns Билгийн тооллын сарын мэдээлэл объект (жил, сар, илүү эсэх)
  */
 export function getLunarMonthForDate(year: number, month: number, day: number) {
   const jd = gregorianToJulianDayNumber(year, month, day);
-  let currentLunarMonth = { year, month, leap: 0 };
+  let currentLunarMonth: LunarMonth = { year, month, leap: 0 };
   let iterationCount = 0;
   const MAX_ITERATIONS = 50;
 
@@ -142,7 +150,7 @@ export function gregorianToJulianDayNumber(
 }
 
 /**
- * Gregorian огноог объект хэлбэрээр буцаадаг.
+ * Gregorian огноог объект хэлбэрээр буцаана.
  */
 export interface GregorianDate {
   year: number;
@@ -151,7 +159,7 @@ export interface GregorianDate {
 }
 
 /**
- * Julian Day Number-ийг Gregorian огноо руу хөрвүүлдэг функц.
+ * Julian Day Number-ийг Gregorian огноо руу хөрвүүлнэ.
  *
  * @param jd - Julian Day Number
  * @returns Gregorian огноо объект (жил, сар, өдөр)
@@ -168,18 +176,20 @@ export function julianDayToGregorian(jd: number): GregorianDate {
 }
 
 /**
- * Өгөгдсөн Gregorian огнооноос лунар огноо (сар, өдөр) болон холбоотой шинж чанаруудыг тооцоолдог.
+ * Өгөгдсөн Gregorian огнооноос Билгийн тооллын огноо (сар, өдөр) болон
+ * холбоотой шинж чанаруудыг тооцоолно.
  *
  * @param year - Gregorian оны жил
  * @param month - Gregorian сарын дугаар
  * @param day - Gregorian өдрийн дугаар
- * @returns Лунар огноо, сарын шинж чанар, өдөр тутмын шинж чанаруудыг агуулсан объект
+ * @returns Билгийн тооллын огноо, сарын шинж, өдрийн шинж чанаруудыг агуулсан объект
  */
 export function getLunarDate(year: number, month: number, day: number) {
   const jd = gregorianToJulianDayNumber(year, month, day);
   const dayAttributes = attribDay(jd);
   const lunarMonth = getLunarMonthForDate(year, month, day);
   const yearAttributes = attribYear(lunarMonth.year);
+  const monthAttrs = getMonthAttributes(lunarMonth.year, lunarMonth.month);
   let lunarDayNumber = 1;
 
   for (let i = 1; i <= 30; i++) {
@@ -202,24 +212,14 @@ export function getLunarDate(year: number, month: number, day: number) {
     jil_animal_number: yearAttributes.animal_number,
     jil_full: `${yearAttributes.cycle}-р жарны ${yearAttributes.cycleName} хэмээх ${yearAttributes.elcor} ${yearAttributes.animalin} жил`,
     sar: `${MMN[lunarMonth.month - 1]}${lunarMonth.leap ? ' (илүү) ' : ' '}`,
-    sar_menge: `${
-      NUMBERN[getMonthAttributes(lunarMonth.year, lunarMonth.month).number - 1]
-    } ${getMonthAttributes(lunarMonth.year, lunarMonth.month).colour9}`,
-    sar_animal_number: getMonthAttributes(lunarMonth.year, lunarMonth.month)
-      .animal_number,
-    sar_jil:
-      getMonthAttributes(lunarMonth.year, lunarMonth.month).elcor +
-      ' ' +
-      getMonthAttributes(lunarMonth.year, lunarMonth.month).animal,
+    sar_menge: `${NUMBERN[monthAttrs.number - 1]} ${monthAttrs.colour9}`,
+    sar_animal_number: monthAttrs.animal_number,
+    sar_jil: monthAttrs.elcor + ' ' + monthAttrs.animal,
     sar_full: `${MMN[lunarMonth.month - 1]}${
       lunarMonth.leap ? ' (илүү), ' : ', '
-    }${
-      NUMBERN[getMonthAttributes(lunarMonth.year, lunarMonth.month).number - 1]
-    } ${
-      getMonthAttributes(lunarMonth.year, lunarMonth.month).colour9
-    } мэнгэтэй, ${
-      getMonthAttributes(lunarMonth.year, lunarMonth.month).elcor
-    } ${getMonthAttributes(lunarMonth.year, lunarMonth.month).animal} сар`,
+    }${NUMBERN[monthAttrs.number - 1]} ${monthAttrs.colour9} мэнгэтэй, ${
+      monthAttrs.elcor
+    } ${monthAttrs.animal} сар`,
     odor_bilgiin_toolol: lunarDayNumber,
     odor_suudal: ELEMENT8[dayAttributes.trigram - 1],
     odor_menge: `${NUMBERN[dayAttributes.number - 1]} ${dayAttributes.colour9}`,
@@ -237,21 +237,21 @@ export function getLunarDate(year: number, month: number, day: number) {
 }
 
 /**
- * Өгөгдсөн жил, сарын хувьд лунар сарын шинж чанарыг тодорхойлж, объект хэлбэрээр буцаана.
+ * Өгөгдсөн жил, сарын хувьд Билгийн тооллын сарын шинж чанарыг тодорхойлж,
+ * объект хэлбэрээр буцаана.
  *
- * @param year - Лунар оны жил
- * @param month - Лунар сарын дугаар
- * @returns Лунар сарын шинж чанаруудыг агуулсан объект
+ * @param year - Жил
+ * @param month - Билгийн тооллын сарын дугаар
+ * @returns Сарын шинж чанаруудыг агуулсан объект
  */
-export function getMonthAttributes(year: number, month: number) {
-  const monthAttributes: any = {};
-  monthAttributes.animal = ANIMAL[(month + 1) % 12];
-  monthAttributes.animal_number = (month + 1) % 12;
+export function getMonthAttributes(year: number, month: number): MonthAttributes {
+  const animal = ANIMAL[(month + 1) % 12];
+  const animal_number = (month + 1) % 12;
   const t = amod(year - 2 + Math.floor((month - 1) / 2), 5);
-  monthAttributes.element = ELEMENT_NAME[t - 1];
-  monthAttributes.colour = COLOUR[2 * (t - 1) + ((month - 1) % 2)];
-  monthAttributes.elcor = monthAttributes.colour;
-  monthAttributes.number = amod(3 - 12 * year - month, 9);
-  monthAttributes.colour9 = COLOUR9[monthAttributes.number - 1];
-  return monthAttributes;
+  const element = ELEMENT_NAME[t - 1];
+  const colour = COLOUR[2 * (t - 1) + ((month - 1) % 2)];
+  const elcor = colour;
+  const number = amod(3 - 12 * year - month, 9);
+  const colour9 = COLOUR9[number - 1];
+  return { animal, animal_number, element, colour, elcor, number, colour9 };
 }

@@ -16,11 +16,20 @@ import { imageCalculator } from './helper';
 
 dayjs.extend(utc);
 
+/**
+ * Бутархай хэсгийг ялган авах туслах функц.
+ */
 const getFractionalComponent = (value: number) => value - floor(value);
 
+/**
+ * Тухайн жилийн Билгийн тооллын шинийн нэгний Julian Day-г тооцоолно.
+ */
 const computeNewYearJulianDay = (year: number) =>
   julianDay(year - 1, 12, 0, 30) + 1;
 
+/**
+ * Сарны үеийг тооцоолох функц (фазын тооцоо).
+ */
 const calculateLunarPhase = (n: number) => {
   const omega = 2.1429 - 0.0010394594 * n;
   const sunMeanLongitude = 4.895063 + 0.017202791698 * n;
@@ -65,9 +74,15 @@ const calculateLunarPhase = (n: number) => {
   );
 };
 
+/**
+ * Сарны үеийн утгыг -0.5..0.5 мужид хэвийн болгоно.
+ */
 const normalizeLunarPhase = (n: number) =>
   getFractionalComponent(calculateLunarPhase(n) + 0.5) - 0.5;
 
+/**
+ * Өгөгдсөн хүрээнд хамгийн ойрын шинэ сарыг олох хоёр талын хайлт.
+ */
 const findClosestNewMoon = (
   startJulian: number,
   endJulian: number,
@@ -108,6 +123,9 @@ const findClosestNewMoon = (
   return relativeMidpoint + REFERENCE_EPOCH.JD;
 };
 
+/**
+ * Тухайн жилийн Билгийн тооллын шинэ жилийн дэлгэрэнгүй мэдээлэл.
+ */
 export const getLunarNewYearDetails = (year: number) => {
   const newYearJulianDay = computeNewYearJulianDay(year);
   const yearInfo = attribYear(year);
