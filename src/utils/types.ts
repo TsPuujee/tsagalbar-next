@@ -42,3 +42,11 @@ export interface LunarNewYearData {
   seat: string;
   lastMonthNewMoon: string;
 }
+
+export interface HairCuttingDay {
+  date: Date;
+  lunarDay: number;
+  recommendation: string;
+  isGood: boolean;
+  description: string;
+}
