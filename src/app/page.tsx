@@ -7,10 +7,11 @@ import HomePageClient from './_components/HomePageClient';
 export async function generateMetadata({
   searchParams,
 }: {
-  searchParams: { date?: string };
+  searchParams: Promise<{ date?: string }>;
 }): Promise<Metadata> {
+  const sp = await searchParams;
   const now = new Date();
-  const dateParam = searchParams?.date;
+  const dateParam = sp?.date;
   const date = dateParam ? new Date(dateParam) : now;
   const year = date.getFullYear();
   const month = date.getMonth() + 1;

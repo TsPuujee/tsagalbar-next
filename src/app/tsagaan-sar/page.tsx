@@ -5,10 +5,11 @@ import TsagaanSarClient from './_components/TsagaanSarClient';
 export async function generateMetadata({
   searchParams,
 }: {
-  searchParams: { year?: string };
+  searchParams: Promise<{ year?: string }>;
 }): Promise<Metadata> {
+  const sp = await searchParams;
   const now = new Date();
-  const yearParam = searchParams?.year;
+  const yearParam = sp?.year;
   const year = yearParam ? parseInt(yearParam, 10) : now.getFullYear() + 1;
   const title = `Цагаан сар — ${year}`;
   const description = `${year} оны Цагаан сарын (шинийн нэгэн) зурхайн мэдээлэл.`;

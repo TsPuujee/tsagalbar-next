@@ -90,7 +90,7 @@ export default function HairCuttingCalendarClient() {
         lunarDay: lunarData.odor_bilgiin_toolol,
         recommendation,
         isGood,
-        description: `${lunarData.odor_animal} өдөр - ${lunarData.odor_suudал} суудал`,
+        description: `${lunarData.odor_animal} өдөр - ${lunarData.odor_suudal} суудал`,
       });
     }
 

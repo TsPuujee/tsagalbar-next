@@ -5,10 +5,11 @@ import HairCuttingCalendarClient from './_components/HairCuttingCalendarClient';
 export async function generateMetadata({
   searchParams,
 }: {
-  searchParams: { month?: string };
+  searchParams: Promise<{ month?: string }>;
 }): Promise<Metadata> {
+  const sp = await searchParams;
   const now = new Date();
-  const monthParam = searchParams?.month;
+  const monthParam = sp?.month;
   const base = monthParam ? new Date(monthParam) : now;
   const year = base.getFullYear();
   const month = base.getMonth() + 1;
