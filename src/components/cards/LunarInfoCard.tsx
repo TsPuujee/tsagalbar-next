@@ -1,3 +1,4 @@
+'use client';
 import clsx from 'clsx';
 import Image from 'next/image';
 import * as React from 'react';
@@ -19,10 +20,38 @@ export default function LunarInfoCard({
   className,
   children,
 }: LunarInfoCardProps) {
+  const [isAnimating, setIsAnimating] = React.useState(false);
+  const prev = React.useRef<{
+    title: string;
+    description: string;
+    imageSrc: string;
+  } | null>(null);
+
+  React.useEffect(() => {
+    const hasPrev = prev.current !== null;
+    const changed =
+      !hasPrev ||
+      prev.current?.title !== title ||
+      prev.current?.description !== description ||
+      prev.current?.imageSrc !== imageSrc;
+
+    if (changed) {
+      setIsAnimating(true);
+      const t = setTimeout(() => setIsAnimating(false), 480);
+      prev.current = { title, description, imageSrc };
+      return () => clearTimeout(t);
+    }
+  }, [title, description, imageSrc]);
+
   return (
     <div className={clsx('card group relative overflow-hidden', className)}>
       {/* Content */}
-      <div className='card-body relative z-10'>
+      <div
+        className={clsx(
+          'card-body relative z-10',
+          isAnimating && 'animate-content-change'
+        )}
+      >
         <div className='flex flex-col items-center space-y-4 text-center'>
           {/* Image */}
           <div className='relative'>
