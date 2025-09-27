@@ -3,10 +3,10 @@
 import clsx from 'clsx';
 import { format } from 'date-fns';
 import Image from 'next/image';
-import { useSearchParams } from 'next/navigation';
 import * as React from 'react';
 
 import useThemeToggle from '@/hooks/useThemeToggle';
+import { useMonthWithUrl } from '@/hooks/useUrlState';
 
 import LunarInfoCard from '@/components/cards/LunarInfoCard';
 import DayChips from '@/components/chips/DayChips';
@@ -16,6 +16,7 @@ import PageHero from '@/components/layout/PageHero';
 import PageMain from '@/components/layout/PageMain';
 import SiteFooter from '@/components/layout/SiteFooter';
 
+import { isGoodHaircutDay } from '@/constants/haircutRecommendations';
 import { getLunarDate } from '@/utils/calendarHelpers';
 
 interface HairCuttingDay {
@@ -27,22 +28,16 @@ interface HairCuttingDay {
 }
 
 export default function HairCuttingCalendarClient() {
-  const searchParams = useSearchParams();
-  const [currentMonth, setCurrentMonth] = React.useState<Date>(new Date());
+  const { selectedDate: currentMonth, changeDate: setCurrentMonth } =
+    useMonthWithUrl();
   const [calendarDays, setCalendarDays] = React.useState<HairCuttingDay[]>([]);
   const todayStr = React.useMemo(() => format(new Date(), 'yyyy-MM-dd'), []);
-
-  React.useEffect(() => {
-    const monthParam = searchParams?.get('month');
-    const initialMonth = monthParam ? new Date(monthParam) : new Date();
-    setCurrentMonth(initialMonth);
-  }, [searchParams]);
 
   React.useEffect(() => {
     generateHairCuttingCalendar(currentMonth);
   }, [currentMonth]);
 
-  const toggleMode = useThemeToggle();
+  const { toggleMode } = useThemeToggle();
 
   const startDayOfWeek = React.useMemo(() => {
     const dow = new Date(
@@ -64,26 +59,7 @@ export default function HairCuttingCalendarClient() {
       const lunarData = getLunarDate(year, monthNum, day);
 
       const recommendation = lunarData.us_zasuulah;
-
-      const goodRecommendations = [
-        'Эд мал баялаг төгөлдөр болно',
-        'Бие эрхтний хүч сайжирна',
-        'Эд мал арвидна',
-        'Өнгө зүс сайжирна',
-        'Нас уртасна',
-        'Эрч хүн ихэснэ',
-        'Эрхтэн хурц болно',
-        'Жаргал ирнэ',
-        'Эд мал арвижина',
-        'Өлзийтэй сайн',
-        'Сайн нөхөртэй нөхөрлөнө',
-        'Идээ ундаа элбэг олдоно',
-        'Эд эдлэл идээ ундаа олдоно',
-        'Жаргал үргэлжид ирнэ',
-        'Өлзийтэй сайн',
-      ];
-
-      const isGood = goodRecommendations.includes(recommendation);
+      const isGood = isGoodHaircutDay(recommendation);
 
       days.push({
         date: currentDate,
@@ -99,10 +75,6 @@ export default function HairCuttingCalendarClient() {
 
   const handleMonthChange = (newMonth: Date) => {
     setCurrentMonth(newMonth);
-    const monthString = format(newMonth, 'yyyy-MM');
-    const url = new URL(window.location.href);
-    url.searchParams.set('month', monthString);
-    window.history.replaceState({}, '', url.toString());
   };
 
   const goodDays = calendarDays.filter((day) => day.isGood);

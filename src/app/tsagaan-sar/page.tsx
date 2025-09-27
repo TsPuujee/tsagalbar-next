@@ -1,32 +1,28 @@
 import type { Metadata } from 'next';
 
+import { generateTsagaanSarMetadata } from '@/utils/metadataGenerator';
+
 import TsagaanSarClient from './_components/TsagaanSarClient';
 
-export async function generateMetadata({
-  searchParams,
-}: {
+interface TsagaanSarPageProps {
   searchParams: Promise<{ year?: string }>;
-}): Promise<Metadata> {
-  const sp = await searchParams;
-  const now = new Date();
-  const yearParam = sp?.year;
-  const year = yearParam ? parseInt(yearParam, 10) : now.getFullYear() + 1;
-  const title = `Цагаан сар — ${year}`;
-  const description = `${year} оны Цагаан сарын (шинийн нэгэн) зурхайн мэдээлэл.`;
-  const canonical = yearParam ? `/tsagaan-sar?year=${year}` : '/tsagaan-sar';
-  return {
-    title,
-    description,
-    alternates: { canonical },
-    openGraph: {
-      title,
-      description,
-      url: `https://tsagalbar.vercel.app${canonical}`,
-    },
-    twitter: { card: 'summary_large_image', title, description },
-  };
 }
 
+/**
+ * Generate metadata for Tsagaan Sar page
+ * Цагаан сарын хуудасны метадата үүсгэх
+ */
+export async function generateMetadata({
+  searchParams,
+}: TsagaanSarPageProps): Promise<Metadata> {
+  const params = await searchParams;
+  return generateTsagaanSarMetadata(params);
+}
+
+/**
+ * Tsagaan Sar page component
+ * Цагаан сарын хуудас
+ */
 export default function TsagaanSarPage() {
   return <TsagaanSarClient />;
 }
