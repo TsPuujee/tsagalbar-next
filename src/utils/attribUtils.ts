@@ -1,4 +1,4 @@
-import { ANIMAL, ANIMALIN, COLOUR, COLOUR9, CYCLENAME, ELEMENT_NAME, US_ZASUULAH } from './constants';
+import { ANIMAL, ANIMALIN, COLOUR, COLOUR9, CYCLENAME, ELEMENT_NAME, US_ZASUULAH } from './constants/index';
 import { amod } from './dateUtils';
 
 /**

@@ -1,6 +1,6 @@
 import { ceil, floor, mod } from 'mathjs';
 
-import { BETA, BETASTAR, CNST, EPOCH, IXX, MZERO } from './constants';
+import { BETA, BETASTAR, CNST, EPOCH, IXX, MZERO } from './constants/index';
 
 /**
  * Үлдэгдэлтэй адил боловч 0 тохиолдолд b-ыг буцаадаг агуулгатай мод функц.

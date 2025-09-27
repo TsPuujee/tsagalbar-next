@@ -10,7 +10,7 @@ import {
   MOON_PHASE_PRECISION,
   NUMBERN,
   REFERENCE_EPOCH,
-} from './constants';
+} from './constants/index';
 import { julianDay } from './dateUtils';
 import { imageCalculator } from './helper';
 

@@ -1,9 +1,8 @@
 import { attribDay, attribYear, usZasuulahForDay } from './attribUtils';
-import { ANIMAL, COLOUR, COLOUR9, ELEMENT_NAME, ELEMENT8, MMN, NUMBERN } from './constants';
+import { ANIMAL, COLOUR, COLOUR9, ELEMENT_NAME, ELEMENT8, MMN, NUMBERN } from './constants/index';
 import { amod, julianDay, leapMonth } from './dateUtils';
 import type { LunarMonth, MonthAttributes } from './types';
 
-// Types moved to utils/types
 
 /**
  * Билгийн тооллын өмнөх сар руу шилжүүлэх туслах функц.
